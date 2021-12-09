@@ -21,17 +21,30 @@ class Player : AnimationSprite  //CHANGE TO ANIMATIONSSPRITE
     public Player() : base("link.png", 10, 8)
     {
         facing = Facing.DOWN;
-        x = game.width / 2;
-        y = game.height / 2;
         SetOrigin(width / 2, height / 2);
-        scale = 0.5f;
+        SetScaleXY(0.4f);
+        
+    }
+
+    private void OnCollision(GameObject other) // problem t
+    {
+        if (other is PickUp)
+        {
+            Console.WriteLine("colliding");
+            PickUp pickUp = other as PickUp;
+            pickUp.Destroy();
+
+        }
     }
     private void Update()
     {
         Movement();
         Animation();
         Animate();
+
     }
+
+
     private void Animation()
     {
         if (isMoving && facing == Facing.DOWN) { SetCycle(40, 10, 50); }
@@ -85,10 +98,9 @@ class Player : AnimationSprite  //CHANGE TO ANIMATIONSSPRITE
             }
             MoveUntilCollision(dx, 0);
             MoveUntilCollision(0, dy);
+            
         }
         else isMoving = false;
-
-
     }
 
 
