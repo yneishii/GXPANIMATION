@@ -14,3 +14,11 @@ C:\Users\enyah\Documents\CMGT\1.2\Programming\GXPENGINE\GXP1_1_Animation\GXPAnim
 C:\Users\enyah\Documents\CMGT\1.2\Programming\GXPENGINE\GXP1_1_Animation\GXPAnimation\GXPEngine\bin\Debug\GXPEngine.exe.config
 C:\Users\enyah\Documents\CMGT\1.2\Programming\GXPENGINE\GXP1_1_Animation\GXPAnimation\GXPEngine\bin\Debug\GXPEngine.exe
 C:\Users\enyah\Documents\CMGT\1.2\Programming\GXPENGINE\GXP1_1_Animation\GXPAnimation\GXPEngine\bin\Debug\GXPEngine.pdb
+C:\Users\enyah\Documents\CMGT\1.2\Programming\GXPENGINE\GXP1_1Animation_extended\GXP1_1_Animation\GXPAnimation\GXPEngine\bin\Debug\GXPEngine.exe.config
+C:\Users\enyah\Documents\CMGT\1.2\Programming\GXPENGINE\GXP1_1Animation_extended\GXP1_1_Animation\GXPAnimation\GXPEngine\bin\Debug\GXPEngine.exe
+C:\Users\enyah\Documents\CMGT\1.2\Programming\GXPENGINE\GXP1_1Animation_extended\GXP1_1_Animation\GXPAnimation\GXPEngine\bin\Debug\GXPEngine.pdb
+C:\Users\enyah\Documents\CMGT\1.2\Programming\GXPENGINE\GXP1_1Animation_extended\GXP1_1_Animation\GXPAnimation\GXPEngine\obj\x86\Debug\GXPEngine.csproj.AssemblyReference.cache
+C:\Users\enyah\Documents\CMGT\1.2\Programming\GXPENGINE\GXP1_1Animation_extended\GXP1_1_Animation\GXPAnimation\GXPEngine\obj\x86\Debug\GXPEngine.csproj.SuggestedBindingRedirects.cache
+C:\Users\enyah\Documents\CMGT\1.2\Programming\GXPENGINE\GXP1_1Animation_extended\GXP1_1_Animation\GXPAnimation\GXPEngine\obj\x86\Debug\GXPEngine.csproj.CoreCompileInputs.cache
+C:\Users\enyah\Documents\CMGT\1.2\Programming\GXPENGINE\GXP1_1Animation_extended\GXP1_1_Animation\GXPAnimation\GXPEngine\obj\x86\Debug\GXPEngine.exe
+C:\Users\enyah\Documents\CMGT\1.2\Programming\GXPENGINE\GXP1_1Animation_extended\GXP1_1_Animation\GXPAnimation\GXPEngine\obj\x86\Debug\GXPEngine.pdb
