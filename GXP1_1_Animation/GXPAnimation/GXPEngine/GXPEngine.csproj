@@ -40,11 +40,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ColTile.cs" />
+    <Compile Include="Scripts\Button.cs" />
+    <Compile Include="Scripts\ColTile.cs" />
     <Compile Include="GXPEngine\AddOns\Gizmos.cs" />
     <Compile Include="GXPEngine\AddOns\SpriteBatch.cs" />
     <Compile Include="GXPEngine\AddOns\TiledLoader.cs" />
-    <Compile Include="MyGame.cs" />
+    <Compile Include="Scripts\Door.cs" />
+    <Compile Include="Scripts\MyGame.cs" />
     <Compile Include="GXPEngine\Core\Canvas.cs" />
     <Compile Include="GXPEngine\Game.cs" />
     <Compile Include="GXPEngine\GameObject.cs" />
@@ -82,9 +84,9 @@
     <Compile Include="GXPEngine\FMOD\FMODSoundSystem.cs" />
     <Compile Include="GXPEngine\SoLoud\Soloud.cs" />
     <Compile Include="GXPEngine\SoLoud\SoloudSoundSystem.cs" />
-    <Compile Include="PickUp.cs" />
-    <Compile Include="Player.cs" />
-    <Compile Include="TestSprite.cs" />
+    <Compile Include="Scripts\PickUp.cs" />
+    <Compile Include="Scripts\Player.cs" />
+    <Compile Include="Scripts\Enemy.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -10,14 +10,14 @@ class PickUp : AnimationSprite
 {
     public PickUp() : base("coin-edited.png", 4, 1, -1 ,true) // how to make sprite NOT solid
     {
-
+        collider.isTrigger = true;
     }
 
     
     private void Update()
     {
         Animate(0.009f);
-        Console.WriteLine(collider.isTrigger);
+        //Console.WriteLine(collider.isTrigger);
     }
 
 }

@@ -4,17 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GXPEngine;
-
-class TestSprite : Sprite
-{
-    public TestSprite() : base("circle.png") 
+class Door : Sprite
+ {
+    public Door() : base("door.png")
     {
-        SetOrigin(width/2, height/2);
+
+       
     }
-    
     private void Update() 
     {
     
     }
-}
+ }
 

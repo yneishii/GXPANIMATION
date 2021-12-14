@@ -3,17 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GXPEngine.Core; //for collision col 
 using GXPEngine;
 
 class Player : AnimationSprite  //CHANGE TO ANIMATIONSSPRITE
 {
+    private const float GRAVITY = 0.2f;
     private const int NONE = 0;
     private const int LEFT = 1;
     private const int RIGHT = 2;
     private const int UP = 3;
     private const int DOWN = 4;
     float xSpeed = 2;
-    float ySpeed = 2;
+    float vy;                // what is the difference between initializing vy to 0 and not?
+    float jumpStrength = 8;
+    bool grounded;
     bool isMoving = false;
 
     private enum Facing { NONE, LEFT, RIGHT, UP, DOWN };
@@ -24,28 +28,87 @@ class Player : AnimationSprite  //CHANGE TO ANIMATIONSSPRITE
         SetOrigin(width / 2, height / 2);
         SetScaleXY(0.4f);
         
+        
     }
 
-    private void OnCollision(GameObject other) // problem t
-    {
-        if (other is PickUp)
-        {
-            Console.WriteLine("colliding");
-            PickUp pickUp = other as PickUp;
-            pickUp.Destroy();
-
-        }
-    }
     private void Update()
     {
         Movement();
-        Animation();
+        MovementAnimation();
         Animate();
+        GameObject[] collisions = GetCollisions();
+        for (int i = 0; i < collisions.Length; i++)
+        {
+            if (collisions[i] is PickUp) 
+            {
+                (game as MyGame).coinCount++;
+                collisions[i].LateDestroy();
+            }
 
+            if (collisions[i] is Enemy)
+            {
+                
+                Console.WriteLine("COLLIDING with Enemy");
+                collisions[i].LateDestroy();
+            }
+        }
     }
 
+    private void Movement()
+    {
+        float dx = 0;
+        vy += GRAVITY;
 
-    private void Animation()
+        if (Input.GetKeyDown(Key.SPACE) && grounded)
+        {
+            Console.WriteLine("KeyPressed");
+            vy = -jumpStrength;
+        }
+
+
+        if (Input.AnyKey())
+        {
+            isMoving = true;                        //for MovementAnimation
+
+            if (Input.GetKey(Key.DOWN))
+            {
+                facing = Facing.DOWN;
+                //dy += ySpeed;
+            }
+            if (Input.GetKey(Key.UP))
+            {
+                facing = Facing.UP;
+                //dy -= ySpeed;
+            }
+
+            if (Input.GetKey(Key.RIGHT))
+            {
+                facing = Facing.RIGHT;
+                //game.x -= xSpeed;     //* Time.deltaTime / 1000 framerate independent movement with deltaTime/1000 millis
+                dx += xSpeed;          //delta time is the difference between the last frame and the current frame
+            }
+            if (Input.GetKey(Key.LEFT))
+            {
+                facing = Facing.LEFT;
+                //game.x += xSpeed;
+                dx -= xSpeed;
+            }
+
+        }
+        else isMoving = false;
+
+        MoveUntilCollision(dx, 0);                  //other collision objects might have to be put at collider.isTrigger
+        Collision col = MoveUntilCollision(0, vy);
+        grounded = false;
+        if (col != null)                            // if vy is colliding then don't keep increasing vy by gravity 
+        {
+            grounded = true;
+            vy = 0;
+        }
+        Console.WriteLine("vy " + vy);
+        Console.WriteLine("y " + y);
+    }
+    private void MovementAnimation()
     {
         if (isMoving && facing == Facing.DOWN) { SetCycle(40, 10, 50); }
         if (isMoving && facing == Facing.LEFT) { SetCycle(50, 10, 50); }
@@ -67,10 +130,8 @@ class Player : AnimationSprite  //CHANGE TO ANIMATIONSSPRITE
     //private enum Facing (NONE, UP, DOWN, LEFT, RIGHT);
     //private Facing _facing = Facing.DOWN;
     //private isMoving = false;
-    void Movement()
+    /*void Movement()
     {
-        float dx = 0;
-        float dy = 0;
         if (Input.AnyKey())
         {
             isMoving = true;
@@ -96,12 +157,13 @@ class Player : AnimationSprite  //CHANGE TO ANIMATIONSSPRITE
                 //game.x += xSpeed;
                 dx -= xSpeed;
             }
-            MoveUntilCollision(dx, 0);
-            MoveUntilCollision(0, dy);
+            x += dx;
+            y += dy;
+            //MoveUntilCollision(0, dy);
             
         }
         else isMoving = false;
-    }
+    }*/
 
 
 }
