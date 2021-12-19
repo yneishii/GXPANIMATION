@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
+using TiledMapParser;
 using GXPEngine.Core; //for collision col 
 using GXPEngine;
 
@@ -22,13 +24,21 @@ class Player : AnimationSprite  //CHANGE TO ANIMATIONSSPRITE
 
     private enum Facing { NONE, LEFT, RIGHT, UP, DOWN };
     Facing facing;
-    public Player() : base("link.png", 10, 8)
+    public Player(TiledObject obj=null) : base("link.png", 10, 8)        //needed for autoInstance
+    {
+        Initialize();
+    }
+
+    public Player(string Imagefile, int cols, int rows, TiledObject obj = null) : base (Imagefile, cols, rows)
+    {
+        Initialize();
+    }
+
+    private void Initialize() 
     {
         facing = Facing.DOWN;
         SetOrigin(width / 2, height / 2);
         SetScaleXY(0.4f);
-        
-        
     }
 
     private void Update()
@@ -39,17 +49,27 @@ class Player : AnimationSprite  //CHANGE TO ANIMATIONSSPRITE
         GameObject[] collisions = GetCollisions();
         for (int i = 0; i < collisions.Length; i++)
         {
-            if (collisions[i] is PickUp) 
+            if (Input.GetKey(Key.Q))
             {
-                (game as MyGame).coinCount++;
-                collisions[i].LateDestroy();
-            }
+                if (collisions[i] is PickUp)
+                {
+                    (game as MyGame).coinCount++;
+                    collisions[i].LateDestroy();
+                }
 
-            if (collisions[i] is Enemy)
-            {
-                
-                Console.WriteLine("COLLIDING with Enemy");
-                collisions[i].LateDestroy();
+                if (collisions[i] is Enemy)
+                {
+                    //Console.WriteLine("COLLIDING with Enemy");
+                    //collisions[i].LateDestroy();
+                }
+                if (collisions[i] is Door)
+                {
+                    Console.WriteLine("Player at door");
+                }
+                if (collisions[i] is Button)
+                {
+                    Console.WriteLine("player at button");
+                }
             }
         }
     }
@@ -61,7 +81,6 @@ class Player : AnimationSprite  //CHANGE TO ANIMATIONSSPRITE
 
         if (Input.GetKeyDown(Key.SPACE) && grounded)
         {
-            Console.WriteLine("KeyPressed");
             vy = -jumpStrength;
         }
 
@@ -105,8 +124,7 @@ class Player : AnimationSprite  //CHANGE TO ANIMATIONSSPRITE
             grounded = true;
             vy = 0;
         }
-        Console.WriteLine("vy " + vy);
-        Console.WriteLine("y " + y);
+        
     }
     private void MovementAnimation()
     {
@@ -130,40 +148,4 @@ class Player : AnimationSprite  //CHANGE TO ANIMATIONSSPRITE
     //private enum Facing (NONE, UP, DOWN, LEFT, RIGHT);
     //private Facing _facing = Facing.DOWN;
     //private isMoving = false;
-    /*void Movement()
-    {
-        if (Input.AnyKey())
-        {
-            isMoving = true;
-            if (Input.GetKey(Key.DOWN))
-            {
-                facing = Facing.DOWN;
-                dy += ySpeed;
-            }
-            if (Input.GetKey(Key.UP))
-            {
-                facing = Facing.UP;
-                dy -= ySpeed;
-            }
-            if (Input.GetKey(Key.RIGHT))
-            {
-                facing = Facing.RIGHT;
-                //game.x -= xSpeed;     //* Time.deltaTime / 1000 framerate independent movement with deltaTime/1000 millis
-                dx += xSpeed;          //delta time is the difference between the last frame and the current frame
-            }
-            if (Input.GetKey(Key.LEFT))
-            {
-                facing = Facing.LEFT;
-                //game.x += xSpeed;
-                dx -= xSpeed;
-            }
-            x += dx;
-            y += dy;
-            //MoveUntilCollision(0, dy);
-            
-        }
-        else isMoving = false;
-    }*/
-
-
 }

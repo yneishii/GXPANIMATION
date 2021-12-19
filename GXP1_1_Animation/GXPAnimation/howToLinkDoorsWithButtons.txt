@@ -1,0 +1,36 @@
+linking:
+
+for all doors D:
+	for all buttons B;
+		if D.label == B.label then
+			B.SetTarget(D)
+			D.increaseTargets()
+
+
+
+
+Button:--------------------------------
+
+OnCollision:
+	if other is Door:
+		myTarget.Press()
+
+
+Door:------------------------------
+
+Update {
+	if numPressed == buttonCounter: OPEN
+	numPressed=0
+}	
+
+
+// called by Buttons:
+public void Press() {
+ numPressed++
+}
+
+// Called while linking:
+publicx void IncreaseTargets() {
+	buttonCounter++;
+}
+------------------------------------

@@ -1,18 +1,18 @@
-using System;									// System contains a lot of default C# libraries 
+using System;                                   // System contains a lot of default C# libraries 
+using System.Collections.Generic;				//for creating collections?
 using GXPEngine;                                // GXPEngine contains the engine
 using System.Drawing;                           // System.Drawing contains drawing tools such as Color definitions
+using TiledMapParser;
 
 public class MyGame : Game
 {
 	EasyDraw coinUI;
-	Pivot level;
 	Player player;
 	ColTile colTile;
 	Enemy enemy;
 	PickUp pickUp;
 	Button button;
-	Door door;
-	
+	Level level;
 	public int coinCount = 0;
 	private float tileSize = 50.0f;                  //desired colTile size
 	private const int NULL = 0;
@@ -23,21 +23,23 @@ public class MyGame : Game
 	private const int DOOR = 5;
 	public MyGame() : base(800, 600, false)     // Create a window that's 800x600 and NOT fullscreen
 	{
+		level = new Level("map1.tmx");
+		AddChild(level);
+
+		//TiledLoader loader = new TiledLoader("map1.tmx");
 
 		//choose between one of them
-				LevelArray();
-				//LevelForLoop();
+		//LevelArray(); //opt1
+		//LevelForLoop();	//opt2
 
-
-		//Create UI
-		coinUI = new EasyDraw(100, 30, false);
-		AddChild(coinUI);
+		createUI();
 	}
 
 	// For every game object, Update is called every frame, by the engine:
 	void Update()
 	{
-
+		
+		/*
 		//player screenx = x + player.x;
 		int boundary = 300;
 		//scroll left
@@ -52,15 +54,61 @@ public class MyGame : Game
 		}
 
 		ShowCoinUI(coinCount); // why is UI not showing?
+		*/
 	}
+
+	void DestroyAll()
+	{
+		List<GameObject> children = GetChildren();
+		foreach (GameObject child in children)
+		{
+			child.Destroy();
+		}
+	}
+
+	public void LoadLevel(string filename) //from 3rd recording level is a child
+	{
+		DestroyAll();
+		//create Level Class Pivot?
+
+	}
+
+	public void createUI()
+	{
+		coinUI = new EasyDraw(100, 30, false);
+		AddChild(coinUI);
+	}
+	private void ShowCoinUI(int coins)
+	{
+		coinUI.Text("COINS: " + coins, true);
+	}
+	static void Main()                          // Main() is the first method that's called when the program is run
+	{
+		new MyGame().Start();                   // Create a "MyGame" and start it
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	private void LevelForLoop()
     {
 		// create wall
-		level = new Pivot();
-		AddChild(level);
 
-		for (int i = 0; i < width / tileSize; i++)
+		/*for (int i = 0; i < width / tileSize; i++)
 		{
 			for (int j = 0; j < height / tileSize; j++)
 			{
@@ -71,10 +119,11 @@ public class MyGame : Game
 					colTile.x = colTile.width * i;
 					colTile.y = colTile.height * j;
 					level.AddChild(colTile);
+					colTile.alpha = 0.1f;
 				}
 			}
 		}
-
+		*/
 		pickUp = new PickUp();
 		pickUp.SetScaleXY(tileSize / pickUp.width);
 		pickUp.x = 150;
@@ -89,20 +138,29 @@ public class MyGame : Game
 
 		Enemy enemy = new Enemy();
 		enemy.x = 600;
-		enemy.y = 100;
+		enemy.y = 80;
 		AddChild(enemy);
+		enemy.SetTarget(player);
 		
-		Button button = new Button();
+		/*Button button = new Button();
 		button.SetScaleXY(tileSize/button.width);
 		button.x = game.width - 2*colTile.width;
 		button.y = game.height - 2*colTile.height;
 		AddChild(button);
+
+		Door door = new Door(1);
+		door.SetScaleXY(2*tileSize/door.width);
+		door.x = (game.width - 10 * colTile.width) - door.width/2;
+		door.y = (game.height - 2 * colTile.height) - door.height/2;
+		AddChild(door);
+		*/
+
 	}
 
 	private void LevelArray() 
 	{
-		level = new Pivot();
-		AddChild(level);
+		//level = new Pivot();
+		//AddChild(level);
 
 		int[,] tileMap =
 		  {
@@ -180,16 +238,6 @@ public class MyGame : Game
 		player.x = game.width / 2;
 		player.y = game.height / 2;
 		AddChild(player);
-
 		
-	}
-
-	private void ShowCoinUI(int coins)
-    {
-		coinUI.Text("COINS: " + coins, true);
-	}
-	static void Main()							// Main() is the first method that's called when the program is run
-	{
-		new MyGame().Start();					// Create a "MyGame" and start it
 	}
 }
