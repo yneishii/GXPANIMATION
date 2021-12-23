@@ -72,6 +72,22 @@ class Player : AnimationSprite  //CHANGE TO ANIMATIONSSPRITE
                 }
             }
         }
+
+        
+        //player screenx = x + player.x;
+        int boundary = 400;
+        //scroll left
+        if (x + game.x < boundary)
+        {
+            game.x = boundary - x;
+        }
+        
+        //scroll right
+        if (x + game.x > game.width - boundary)
+        {
+            game.x = game.width - boundary - x;
+        }
+        
     }
 
     private void Movement()

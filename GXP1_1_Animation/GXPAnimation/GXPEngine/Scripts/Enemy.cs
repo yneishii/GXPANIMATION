@@ -57,7 +57,7 @@ class Enemy : AnimationSprite
         else
         {
             Console.WriteLine("No target set!");
-        }
+        }   
         
         x+= vx;
         //vy += GRAVITY;

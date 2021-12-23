@@ -7,16 +7,26 @@ using TiledMapParser;
 using GXPEngine;
 class Button : AnimationSprite
 {
-    private int buttonNumber = 0;       //used for the buttonCounter
-    protected bool isActivated = false; //should it be public/ protected?
-    public Button(TiledObject obj = null) : base("button.png",2, 1)
+    public string label;
+    private Door targetObject;          //directly use door instead of Gameobjecy
+    public Button(TiledObject obj = null) : base("button.png",2, 1) //difference?
     {
         Initialize();
     }
 
-    public Button(string Imagefile, int cols, int rows, TiledObject obj = null) : base(Imagefile, cols, rows) 
+    public Button(string Imagefile, int cols, int rows, TiledObject obj = null) : base(Imagefile, cols, rows)  
     {
         Initialize();
+        label = obj.GetStringProperty("label", "");                                                     //should this be in initialize?
+        if (label == "") 
+        {
+            Console.WriteLine("Button: no label/ something went wrong in Tiled");
+        }
+        else
+        {
+            Console.WriteLine("loaded button with label {0}", label);
+        }
+        
     }
 
     private void Initialize()
@@ -25,6 +35,10 @@ class Button : AnimationSprite
         collider.isTrigger = true;
     }
 
+    public void SetTarget(Door obj)
+    {
+        targetObject = obj; //linking door
+    }
     private void Update()
     {
         SetCycle(0, 1);                         
@@ -32,21 +46,18 @@ class Button : AnimationSprite
         for (int i = 0; i < collisions.Length; i++)
         {
             if (collisions[i] is Player || collisions[i] is Enemy) // add barrel
-            {
-                isActivated = true;             //should I use a boolean in the first place?
-                SetCycle(1, 1);
-                buttonNumber = 1;               // buttonCounter is all foreach button in (list <Button>)buttons 
-                                                //                      buttonCounter += button.buttonNumber;                
-            }
-            else
-            {
-                isActivated = false;
-                buttonNumber = 0;
+            {        
+                SetCycle(1, 1);             //pressed image
+                if (targetObject is Door)   //would this work tho?
+                {
+                    targetObject.Press(); 
+                }   
             }
         }
-
     }
 
 
 }
 
+//init idea             buttonCounter is all foreach button in (list <Button>)buttons 
+//                      buttonCounter += button.buttonNumber;                

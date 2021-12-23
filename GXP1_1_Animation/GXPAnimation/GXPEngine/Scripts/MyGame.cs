@@ -21,12 +21,11 @@ public class MyGame : Game
 	private const int ENEMY = 3;
 	private const int BUTTON = 4;
 	private const int DOOR = 5;
-	public MyGame() : base(800, 600, false)     // Create a window that's 800x600 and NOT fullscreen
+	private String[] maps = { "map1.tmx", "map2.tmx" };
+	public MyGame() : base(1000, 600, false)     // Create a window that's 800x600 and NOT fullscreen
 	{
-		level = new Level("map1.tmx");
+		level = new Level(maps[0]);
 		AddChild(level);
-
-		//TiledLoader loader = new TiledLoader("map1.tmx");
 
 		//choose between one of them
 		//LevelArray(); //opt1
@@ -39,22 +38,6 @@ public class MyGame : Game
 	void Update()
 	{
 		
-		/*
-		//player screenx = x + player.x;
-		int boundary = 300;
-		//scroll left
-		if (player.x + x < boundary)
-		{
-			x = boundary - player.x;
-		}
-		//scroll right
-		if (player.x + x > width - boundary)
-		{
-			x = width - boundary - player.x;
-		}
-
-		ShowCoinUI(coinCount); // why is UI not showing?
-		*/
 	}
 
 	void DestroyAll()

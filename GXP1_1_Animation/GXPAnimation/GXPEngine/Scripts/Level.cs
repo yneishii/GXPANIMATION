@@ -7,6 +7,8 @@ using TiledMapParser;
 using GXPEngine;
 class Level : GameObject
 {
+    Door[] doors; // will this work?
+    Button[] buttons;
     Player player;
     TiledLoader loader;
     string currentLevelName;
@@ -15,21 +17,46 @@ class Level : GameObject
         currentLevelName = levelName;
         loader = new TiledLoader(levelName);
         createLevel();
+        LinkButtonDoor();
     }
-    
-    private void createLevel() 
+
+    private void createLevel(bool includeImageLayers = true) 
     {
+        loader.rootObject = this; //child obj of level: needed for scrolling
         loader.LoadTileLayers();
         loader.addColliders = true;
         loader.autoInstance = true;
         loader.LoadObjectGroups();
-        
-
+        doors = FindObjectsOfType<Door>();
+        buttons = FindObjectsOfType<Button>(); //have not tested yet
+        player = FindObjectOfType<Player>();
     }
-    
+
     private void Update()
     {
+        
+    }
 
+    //after create level
+    private void LinkButtonDoor()
+    {
+        foreach (Door door in doors)
+        {
+            foreach (Button button in buttons)
+            {
+                if (door.label == button.label) //why cant I use protected for label? instead public
+                {
+                    button.SetTarget(door);
+                    door.IncreaseButtonCount();
+                    Console.WriteLine("linking successful: door label {0} \n                    button label {1}", door.label, button.label);
+                    Console.WriteLine("door buttoncounter " + door.GetButtonCounter());
+
+                }
+            }
+        }
+
+       // Console.WriteLine("doors in Level {0}, buttons in Level {1}", doors.Length, buttons.Length);
+      //  Console.WriteLine("buttonCounter door1"doors[0].getButtonCounter(), doors[0].getNumPressed());
     }
 }
 
