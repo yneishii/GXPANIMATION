@@ -9,11 +9,26 @@ using TiledMapParser;
 
 class Door : AnimationSprite
  {
-    public string label;
+    private string label;        //property to make them only readable from the outside
+    private string nextMap;
+    private bool isOpen = false; //check whether the door is Open or not
     private int numPressed = 0; //amount of pressed Buttons
     private int buttonCounter = 0; //amount of buttons the door is linked with
 
-    public Door(TiledObject obj) : base("door.png", 1, 1)
+    public string Label 
+    {
+        get { return label; }
+        set { label = ""; }
+    }
+
+    public string NextMap
+    { 
+        get { return nextMap;}
+        set { nextMap = ""; }
+    }
+
+
+    public Door(TiledObject obj) : base("doorbetter.png", 2, 1)
     {
         // nothing?
     }
@@ -21,6 +36,7 @@ class Door : AnimationSprite
     public Door(string Imagefile, int cols, int rows, TiledObject obj) : base( Imagefile,  cols, rows)
     {
         label = obj.GetStringProperty("label", "");
+        nextMap = obj.GetStringProperty("nextMap", "");
         if (label == "")
         {
             Console.WriteLine("Door: Something went wrong: check label in Tiled!");
@@ -28,6 +44,15 @@ class Door : AnimationSprite
         else
         {
             Console.WriteLine("Loaded a door with label {0}", label);
+        }
+
+        if (nextMap == "")
+        {
+            Console.WriteLine("Door NEXTMAP: something went wrong, CHECK nextMap in Tiled");
+        }
+        else
+        {
+            Console.WriteLine("Door label {0} with nextMap {1}", label, nextMap);
         }
         collider.isTrigger = true;
     }
@@ -43,14 +68,22 @@ class Door : AnimationSprite
     {
         buttonCounter++;
     }
-    private void Update() 
+    private void Update()
     {
         if (numPressed == buttonCounter)
         {
             //OPEN DOOR
             Console.WriteLine("door open {0}", label);
+            SetCycle(1, 1);                                               //need to find a way to set animation to door open,also how do i open it in tiled
+            //not playing animation because this SetCycle uses the default door class --> need to find a way to play animation, also does this code work?
         }
-        else numPressed = 0;    //close door
+        else
+        {
+            SetCycle(0, 0);
+            numPressed = 0;    //close door
+            
+        }
+
     }
 
     public int GetNumPressed() 
@@ -62,9 +95,5 @@ class Door : AnimationSprite
         return buttonCounter;
     }
     
-    public string GetLabel()
-    {
-        return label;
-    }
 }
 

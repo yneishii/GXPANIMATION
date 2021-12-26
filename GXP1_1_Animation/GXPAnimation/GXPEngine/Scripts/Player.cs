@@ -64,7 +64,14 @@ class Player : AnimationSprite  //CHANGE TO ANIMATIONSSPRITE
                 }
                 if (collisions[i] is Door)
                 {
-                    Console.WriteLine("Player at door");
+                    Door door = (Door)collisions[i];
+                    Console.WriteLine("player at LABEL {0}, MAP {1}", door.Label, door.NextMap);
+
+                    if (Input.GetKeyDown(Key.UP) && door.GetNumPressed() == door.GetButtonCounter()) //NEED to check whether it works or not
+                    {
+                        (game as MyGame).LoadLevel(door.NextMap);
+                        Console.WriteLine("go through door");           //also press Q to make it work
+                    }
                 }
                 if (collisions[i] is Button)
                 {

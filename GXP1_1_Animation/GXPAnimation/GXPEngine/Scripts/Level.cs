@@ -9,13 +9,14 @@ class Level : GameObject
 {
     Door[] doors; // will this work?
     Button[] buttons;
-    Player player;
+    Player player;      //needed for Tiled!
     TiledLoader loader;
-    string currentLevelName;
+    public string currentLevelName;
+
     public Level(string levelName) : base()
     {
         currentLevelName = levelName;
-        loader = new TiledLoader(levelName);
+        loader = new TiledLoader(levelName); //load currentLevel in Tiled
         createLevel();
         LinkButtonDoor();
     }
@@ -44,11 +45,11 @@ class Level : GameObject
         {
             foreach (Button button in buttons)
             {
-                if (door.label == button.label) //why cant I use protected for label? instead public
+                if (door.Label == button.Label) //why cant I use protected for label? instead public
                 {
                     button.SetTarget(door);
                     door.IncreaseButtonCount();
-                    Console.WriteLine("linking successful: door label {0} \n                    button label {1}", door.label, button.label);
+                    Console.WriteLine("linking successful: door label {0} \n                    button label {1}", door.Label, button.Label);
                     Console.WriteLine("door buttoncounter " + door.GetButtonCounter());
 
                 }

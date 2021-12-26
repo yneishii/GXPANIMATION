@@ -7,25 +7,34 @@ using TiledMapParser;
 public class MyGame : Game
 {
 	EasyDraw coinUI;
-	Player player;
-	ColTile colTile;
-	Enemy enemy;
-	PickUp pickUp;
-	Button button;
-	Level level;
+	//Player player;
+	//ColTile colTile;
+	//Enemy enemy;
+	//PickUp pickUp;
+	//Button button;
+	Level startLevel;
+	string saveLevelName;
+	string nextLevel = null;
 	public int coinCount = 0;
-	private float tileSize = 50.0f;                  //desired colTile size
+
+	public bool changeLevel = false; //temporary
+	
+	/*private float tileSize = 50.0f;                  //desired colTile size
 	private const int NULL = 0;
 	private const int TILE = 1;
 	private const int PICKUP = 2;
 	private const int ENEMY = 3;
 	private const int BUTTON = 4;
 	private const int DOOR = 5;
+	*/
 	private String[] maps = { "map1.tmx", "map2.tmx" };
+	int currentLevelNumber = 0;
 	public MyGame() : base(1000, 600, false)     // Create a window that's 800x600 and NOT fullscreen
 	{
-		level = new Level(maps[0]);
-		AddChild(level);
+		OnAfterStep += CheckLoadLevel;
+		startLevel = new Level(maps[currentLevelNumber]);
+		AddChild(startLevel);
+
 
 		//choose between one of them
 		//LevelArray(); //opt1
@@ -37,22 +46,69 @@ public class MyGame : Game
 	// For every game object, Update is called every frame, by the engine:
 	void Update()
 	{
-		
+		if (Input.GetKeyDown(Key.L))			//temporary changing levels
+        {
+			nextLevel = maps[1];
+            Console.WriteLine(nextLevel);
+            Console.WriteLine("L pressed");
+        }
+
+		//RESTART LEVEL HOT KEY	
+		if (Input.GetKeyDown(Key.LEFT_SHIFT))			
+        {
+			saveLevelName = startLevel.currentLevelName;
+            Console.WriteLine("restart startLevel");
+			DestroyAll();
+			startLevel = new Level (saveLevelName);
+			AddChild(startLevel);
+			
+			//startLevel = saveLevel;
+			//AddChild(startLevel);
+        }
+
+		if (coinUI != null)
+        {
+			//ShowCoinUI();
+        }
 	}
 
+	void CheckLoadLevel()
+    {
+		if (nextLevel != null)
+        {
+			//LoadLevel(nextLevel);
+			//saveLevelName = startLevel.currentLevelName;
+			DestroyAll();                                       //startLevel = null
+			startLevel = new Level(nextLevel);
+			AddChild(startLevel);                     //next Level is maps
+			createUI();
+			nextLevel = null;
+		}
+		
+    }
 	void DestroyAll()
 	{
 		List<GameObject> children = GetChildren();
 		foreach (GameObject child in children)
 		{
 			child.Destroy();
+            Console.WriteLine("children destroyed");
 		}
 	}
 
-	public void LoadLevel(string filename) //from 3rd recording level is a child
+	public void LoadLevel(string nextLevel) //from 3rd recording level is a child
 	{
-		DestroyAll();
-		//create Level Class Pivot?
+		DestroyAll();										//startLevel = null
+		AddChild(new Level(nextLevel));						//next Level is maps
+		createUI();
+
+		/*
+		if (currentLevelNumber + 1 < maps.Length)
+		{
+			currentLevelNumber++;
+			nextLevel = new Level(maps[currentLevelNumber]);
+		}
+		*/
 
 	}
 
@@ -60,6 +116,7 @@ public class MyGame : Game
 	{
 		coinUI = new EasyDraw(100, 30, false);
 		AddChild(coinUI);
+        Console.WriteLine("UI created");
 	}
 	private void ShowCoinUI(int coins)
 	{
@@ -77,15 +134,7 @@ public class MyGame : Game
 
 
 
-
-
-
-
-
-
-
-
-
+/*
 
 	private void LevelForLoop()
     {
@@ -106,18 +155,18 @@ public class MyGame : Game
 				}
 			}
 		}
-		*/
+		
 		pickUp = new PickUp();
 		pickUp.SetScaleXY(tileSize / pickUp.width);
 		pickUp.x = 150;
 		pickUp.y = 150;
-		level.AddChild(pickUp);
+		startLevel.AddChild(pickUp);
 
 
 		player = new Player();
 		player.x = game.width / 2;
 		player.y = game.height / 2;
-		level.AddChild(player);
+		startLevel.AddChild(player);
 
 		Enemy enemy = new Enemy();
 		enemy.x = 600;
@@ -136,7 +185,7 @@ public class MyGame : Game
 		door.x = (game.width - 10 * colTile.width) - door.width/2;
 		door.y = (game.height - 2 * colTile.height) - door.height/2;
 		AddChild(door);
-		*/
+		
 
 	}
 
@@ -175,25 +224,25 @@ public class MyGame : Game
 						colTile = new ColTile();
 						colTile.SetScaleXY(tileSize/ colTile.width);
 						colTile.SetXY(i * tileSize, j * tileSize);
-						level.AddChild(colTile);
+						startLevel.AddChild(colTile);
 						break;
 					case PICKUP:
 						pickUp = new PickUp();
 						pickUp.SetScaleXY(tileSize / pickUp.width);
 						pickUp.SetXY(i * tileSize, j * tileSize);
-						level.AddChild(pickUp);
+						startLevel.AddChild(pickUp);
 						break;
 					case ENEMY:
 						enemy = new Enemy();
 						enemy.SetScaleXY(tileSize / enemy.width);
 						enemy.SetXY(i * tileSize, j *tileSize);
-						level.AddChild(enemy);
+						startLevel.AddChild(enemy);
 						break;
 					case BUTTON:
 						button = new Button();
 						button.SetScaleXY(tileSize / button.width);
 						button.SetXY(i * tileSize, j * tileSize);
-						level.AddChild(button);
+						startLevel.AddChild(button);
 						break;
 					
 					/*case DOOR:
@@ -202,7 +251,7 @@ public class MyGame : Game
 						door.SetXY(i * tileSize, j * tileSize);
 						level.AddChild(door);
 						break;
-					*/
+					
 
 					default:
 						Console.WriteLine("No type defined for value {0}", tileMap[i, j]);
@@ -223,4 +272,5 @@ public class MyGame : Game
 		AddChild(player);
 		
 	}
+*/
 }

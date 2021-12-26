@@ -7,8 +7,13 @@ using TiledMapParser;
 using GXPEngine;
 class Button : AnimationSprite
 {
-    public string label;
-    private Door targetObject;          //directly use door instead of Gameobjecy
+    private string label;
+    private Door targetObject;          //directly use door instead of Gameobject
+    public string Label
+    {
+        get { return label; }
+        set { label = ""; }
+    }
     public Button(TiledObject obj = null) : base("button.png",2, 1) //difference?
     {
         Initialize();

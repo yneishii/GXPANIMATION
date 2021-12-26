@@ -45,7 +45,7 @@ class Enemy : AnimationSprite
         {
             float dx = target.x - x;
             float dy = target.y - y;
-            float angle = Mathf.Atan2(dy, dx) * 180 / Mathf.PI; // All will be revealed during physics... (or just google)
+            float angle = Mathf.Atan2(dy, dx) * 180 / Mathf.PI; // All will be revealed during physics... (or just google) // not needed for the game for now
             vision.rotation = angle;
             // todo: scale the vision ray length such that it ends up exactly at the player
             // also todo: check collisions for the vision ray
