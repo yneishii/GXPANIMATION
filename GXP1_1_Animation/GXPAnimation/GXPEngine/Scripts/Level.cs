@@ -11,6 +11,7 @@ class Level : GameObject
     Button[] buttons;
     Barrel[] barrels;
     Player player;      //needed for Tiled!
+    Enemy []enemies;
     TiledLoader loader;
     public string currentLevelName;
 
@@ -33,6 +34,12 @@ class Level : GameObject
         buttons = FindObjectsOfType<Button>(); 
         barrels = FindObjectsOfType<Barrel>();
         player = FindObjectOfType<Player>();
+        Console.WriteLine(player);
+        enemies = FindObjectsOfType<Enemy>();
+        Console.WriteLine("enemies in enemies: " + enemies.Length);
+        foreach (Enemy enemy in enemies) { enemy.SetTarget(player); }
+
+
     }
 
     private void Update()

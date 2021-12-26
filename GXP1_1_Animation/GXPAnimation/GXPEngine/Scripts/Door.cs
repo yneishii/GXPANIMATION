@@ -73,8 +73,7 @@ class Door : AnimationSprite
         if (numPressed == buttonCounter)
         {
             //OPEN DOOR
-            Console.WriteLine("door open {0}", label);
-            SetCycle(1, 1);                                               //need to find a way to set animation to door open,also how do i open it in tiled
+            SetCycle(1, 1);   //need to find a way to set animation to door open,also how do i open it in tiled
             //not playing animation because this SetCycle uses the default door class --> need to find a way to play animation, also does this code work?
         }
         else

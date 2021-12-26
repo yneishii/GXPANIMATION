@@ -128,7 +128,7 @@ class Player : AnimationSprite  //CHANGE TO ANIMATIONSSPRITE
             game.x = game.width - boundary - x;
         }
 
-        Console.WriteLine(isHiding);
+       
     }
 
     private void Movement()

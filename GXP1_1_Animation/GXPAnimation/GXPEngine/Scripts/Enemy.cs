@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using GXPEngine;
 using GXPEngine.Core;
+using TiledMapParser;
 
 class Enemy : AnimationSprite
 {
@@ -16,18 +17,21 @@ class Enemy : AnimationSprite
     GameObject target;
     Sprite vision;
 
-    public Enemy() : base("Chrom.png", 8, 4) 
+    public Enemy(TiledObject obj) : base("Chrom.png", 8, 4) 
     {
-        SetOrigin(width/2, height/2);
-        Mirror(true, false);
+    }
+    public Enemy (string imageFile, int cols, int rows, TiledObject obj) : base( imageFile, cols, rows)
+    {
+        SetOrigin(width / 2, height / 2);
         collider.isTrigger = true;
-
-        vision = new Sprite("colors.png");
+        
+       /* vision = new Sprite("colors.png");
         vision.SetOrigin(0, vision.height / 2);
         vision.scaleX = 3; // current length: 64 * 3 = 192?
         vision.scaleY = 0.1f;
         AddChild(vision);
-        vision . alpha = 0.2f;
+        vision.alpha = 0.2f;
+       */
     }
     
     public void SetTarget(GameObject target)
@@ -46,7 +50,7 @@ class Enemy : AnimationSprite
             float dx = target.x - x;
             float dy = target.y - y;
             float angle = Mathf.Atan2(dy, dx) * 180 / Mathf.PI; // All will be revealed during physics... (or just google) // not needed for the game for now
-            vision.rotation = angle;
+            //vision.rotation = angle;
             // todo: scale the vision ray length such that it ends up exactly at the player
             // also todo: check collisions for the vision ray
             if (Input.GetKey(Key.LEFT_SHIFT))
@@ -59,19 +63,36 @@ class Enemy : AnimationSprite
             Console.WriteLine("No target set!");
         }   
         
-        x+= vx;
-        //vy += GRAVITY;
+        //x+= vx;
+        vy += GRAVITY;
         
-        Collision yCol =MoveUntilCollision(0, vy);
+        Collision yCol = MoveUntilCollision(0, vy); 
         if (yCol != null)
         {
             vy = 0;
         }
-    
+
+        Collision xCol = MoveUntilCollision(vx, 0);
+        if (xCol != null)
+        {
+            vx = -vx;
+
+            if (!walkRight)
+            {
+                Mirror(true, false);    //turn right
+                walkRight = true;
+            }
+            else
+            {
+                Mirror(false, false); //turn left
+                walkRight = false;
+            }
+        }
+        /*
         GameObject[] collisions = GetCollisions();
         for (int i = 0; i < collisions.Length; i++)
         {
-            if (collisions[i] is ColTile || collisions[i] is Door)
+            if (collisions[i] is ColTile  || collisions[i] is Barrel)           //enemy falls through because colTile isnt Triggercollider
             {
                 //Console.WriteLine("Enemy Colliding");
                 vx = -vx;
@@ -89,6 +110,7 @@ class Enemy : AnimationSprite
                 break; // to prevent double collision
             }
         }
+        */
     }
 }
 
