@@ -31,7 +31,6 @@ class Button : AnimationSprite
         {
             Console.WriteLine("loaded button with label {0}", label);
         }
-        
     }
 
     private void Initialize()
@@ -50,7 +49,7 @@ class Button : AnimationSprite
         GameObject [] collisions = GetCollisions();
         for (int i = 0; i < collisions.Length; i++)
         {
-            if (collisions[i] is Player || collisions[i] is Enemy) // add barrel
+            if (collisions[i] is Player || collisions[i] is Enemy || collisions[i] is Barrel) // add barrel
             {        
                 SetCycle(1, 1);             //pressed image
                 if (targetObject is Door)   //would this work tho?

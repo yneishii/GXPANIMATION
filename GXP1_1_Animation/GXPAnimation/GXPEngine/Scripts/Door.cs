@@ -81,7 +81,6 @@ class Door : AnimationSprite
         {
             SetCycle(0, 0);
             numPressed = 0;    //close door
-            
         }
 
     }

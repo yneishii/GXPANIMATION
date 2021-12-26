@@ -9,6 +9,7 @@ class Level : GameObject
 {
     Door[] doors; // will this work?
     Button[] buttons;
+    Barrel[] barrels;
     Player player;      //needed for Tiled!
     TiledLoader loader;
     public string currentLevelName;
@@ -29,7 +30,8 @@ class Level : GameObject
         loader.autoInstance = true;
         loader.LoadObjectGroups();
         doors = FindObjectsOfType<Door>();
-        buttons = FindObjectsOfType<Button>(); //have not tested yet
+        buttons = FindObjectsOfType<Button>(); 
+        barrels = FindObjectsOfType<Barrel>();
         player = FindObjectOfType<Player>();
     }
 

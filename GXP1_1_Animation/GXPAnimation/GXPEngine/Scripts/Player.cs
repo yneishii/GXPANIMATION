@@ -17,10 +17,15 @@ class Player : AnimationSprite  //CHANGE TO ANIMATIONSSPRITE
     private const int UP = 3;
     private const int DOWN = 4;
     float xSpeed = 2;
-    float vy;                // what is the difference between initializing vy to 0 and not?
-    float jumpStrength = 8;
-    bool grounded;
+    float _xSpeed;                  //to store original xSpeed
+    float xSpeedBarrel = 0.5f;      //speed when hiding in barrel
+    float vy;                       // for falling
+    float jumpStrength = 8; 
+    float _jumpStrength;            //to store original jumpStrength
+    float _jumpStrengthBarrel = 1f;      //jumpStrength when hiding in barrel
+    bool grounded;                  //check whether the player is on the ground
     bool isMoving = false;
+    bool isHiding = false;          //check whether the player is under a barrel
 
     private enum Facing { NONE, LEFT, RIGHT, UP, DOWN };
     Facing facing;
@@ -39,18 +44,46 @@ class Player : AnimationSprite  //CHANGE TO ANIMATIONSSPRITE
         facing = Facing.DOWN;
         SetOrigin(width / 2, height / 2);
         SetScaleXY(0.4f);
+        _xSpeed = xSpeed;
+        _jumpStrength = jumpStrength;
     }
 
     private void Update()
     {
+        //slow down movement if player is moving in barrel
+        if(isHiding)
+        {
+            xSpeed = xSpeedBarrel;
+            jumpStrength = _jumpStrengthBarrel; 
+        }
+        //set movement back to original speed
+        else 
+        {
+            jumpStrength = _jumpStrength;
+            xSpeed = _xSpeed;
+        }
+
         Movement();
         MovementAnimation();
         Animate();
         GameObject[] collisions = GetCollisions();
         for (int i = 0; i < collisions.Length; i++)
         {
-            if (Input.GetKey(Key.Q))
-            {
+            //if (Input.GetKey(Key.Q))
+            //{
+                if (collisions[i] is Barrel )
+                {
+                    Barrel barrel = (Barrel) collisions[i];
+                    if (barrel.canHide)                     //set to false when releasing X
+                    {
+                        isHiding = true;
+                        barrel.SetXY(this.x, this.y);
+                    }
+                    else isHiding = false;
+                }
+                
+                
+
                 if (collisions[i] is PickUp)
                 {
                     (game as MyGame).coinCount++;
@@ -65,19 +98,19 @@ class Player : AnimationSprite  //CHANGE TO ANIMATIONSSPRITE
                 if (collisions[i] is Door)
                 {
                     Door door = (Door)collisions[i];
-                    Console.WriteLine("player at LABEL {0}, MAP {1}", door.Label, door.NextMap);
+                    //Console.WriteLine("player at LABEL {0}, MAP {1}", door.Label, door.NextMap);
 
                     if (Input.GetKeyDown(Key.UP) && door.GetNumPressed() == door.GetButtonCounter()) //NEED to check whether it works or not
                     {
                         (game as MyGame).LoadLevel(door.NextMap);
-                        Console.WriteLine("go through door");           //also press Q to make it work
+                        //Console.WriteLine("go through door");           //also press Q to make it work
                     }
                 }
                 if (collisions[i] is Button)
                 {
-                    Console.WriteLine("player at button");
+                    //Console.WriteLine("player at button");
                 }
-            }
+            //}
         }
 
         
@@ -94,7 +127,8 @@ class Player : AnimationSprite  //CHANGE TO ANIMATIONSSPRITE
         {
             game.x = game.width - boundary - x;
         }
-        
+
+        Console.WriteLine(isHiding);
     }
 
     private void Movement()
