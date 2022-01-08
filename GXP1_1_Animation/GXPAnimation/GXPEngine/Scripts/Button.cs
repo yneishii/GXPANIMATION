@@ -14,7 +14,7 @@ class Button : AnimationSprite
         get { return label; }
         set { label = ""; }
     }
-    public Button(TiledObject obj = null) : base("button.png",2, 1) //difference?
+    public Button(TiledObject obj = null) : base("button.png",2, 1) // this one is not called, Animation still runs
     {
         Initialize();
     }

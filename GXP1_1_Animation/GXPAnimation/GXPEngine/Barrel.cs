@@ -12,7 +12,7 @@ class Barrel : AnimationSprite
 {
     private const float GRAVITY = 0.2f;
     float vy;
-    public Sprite sensor; // not in use
+    //public Sprite sensor; // not in use
     public bool canHide = false;        //called in Player
     public Barrel(TiledObject obj) : base("barrel.png", 1, 1)
     {
@@ -44,7 +44,7 @@ class Barrel : AnimationSprite
         if (Input.GetKey(Key.X))
         {
             canHide = true;
-            collider.isTrigger = true;
+            collider.isTrigger = true;  
         }
         else
         {

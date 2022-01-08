@@ -11,7 +11,7 @@ class Door : AnimationSprite
  {
     private string label;        //property to make them only readable from the outside
     private string nextMap;
-    private bool isOpen = false; //check whether the door is Open or not
+    //private bool isOpen = false; //check whether the door is Open or not
     private int numPressed = 0; //amount of pressed Buttons
     private int buttonCounter = 0; //amount of buttons the door is linked with
 
@@ -30,7 +30,7 @@ class Door : AnimationSprite
 
     public Door(TiledObject obj) : base("doorbetter.png", 2, 1)
     {
-        // nothing?
+       
     }
 
     public Door(string Imagefile, int cols, int rows, TiledObject obj) : base( Imagefile,  cols, rows)
@@ -55,12 +55,15 @@ class Door : AnimationSprite
             Console.WriteLine("Door label {0} with nextMap {1}", label, nextMap);
         }
         collider.isTrigger = true;
+
+        //((MyGame)game).ShowUI(0); //doesnt work!!         WHY DOESNT IT WORK???
     }
 
     //called by Buttons
     public void Press()
     {
         numPressed++;
+        
     }
 
     //called in level
@@ -70,18 +73,20 @@ class Door : AnimationSprite
     }
     private void Update()
     {
+
+        //Problem door open and closes repeatedly
         if (numPressed == buttonCounter)
         {
             //OPEN DOOR
-            SetCycle(1, 1);   //need to find a way to set animation to door open,also how do i open it in tiled
-            //not playing animation because this SetCycle uses the default door class --> need to find a way to play animation, also does this code work?
+            SetCycle(1, 1);  
+            
         }
         else
         {
-            SetCycle(0, 0);
+            SetCycle(0, 1);
             numPressed = 0;    //close door
+            
         }
-
     }
 
     public int GetNumPressed() 

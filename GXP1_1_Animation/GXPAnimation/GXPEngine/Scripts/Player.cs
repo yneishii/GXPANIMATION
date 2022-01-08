@@ -10,33 +10,35 @@ using GXPEngine;
 
 class Player : AnimationSprite  //CHANGE TO ANIMATIONSSPRITE
 {
-    private const float GRAVITY = 0.2f;
+    private const float GRAVITY = 4f; //at 240 - 0.5
     private const int NONE = 0;
     private const int LEFT = 1;
     private const int RIGHT = 2;
     private const int UP = 3;
     private const int DOWN = 4;
-    float xSpeed = 2;
+    float xSpeed = 10;              //at 240 - 2
     float _xSpeed;                  //to store original xSpeed
-    float xSpeedBarrel = 0.5f;      //speed when hiding in barrel
-    float vy;                       // for falling
-    float jumpStrength = 8; 
+    float xSpeedBarrel = 0.9f;      //speed when hiding in barrel
+    float vy;                       //force for falling
+    float jumpStrength = 50;        //at 240 - 8
     float _jumpStrength;            //to store original jumpStrength
     float _jumpStrengthBarrel = 1f;      //jumpStrength when hiding in barrel
     bool grounded;                  //check whether the player is on the ground
-    bool isMoving = false;
-    bool isHiding = false;          //check whether the player is under a barrel
+    public bool isMoving = false;          //for playing animation && check in Enemy raycasting
+    public bool isHiding = false;          //check whether the player is under a barrel, checked in Enemy
 
     private enum Facing { NONE, LEFT, RIGHT, UP, DOWN };
     Facing facing;
     public Player(TiledObject obj=null) : base("link.png", 10, 8)        //needed for autoInstance
     {
         Initialize();
+        
     }
 
     public Player(string Imagefile, int cols, int rows, TiledObject obj = null) : base (Imagefile, cols, rows)
     {
         Initialize();
+       
     }
 
     private void Initialize() 
@@ -69,31 +71,19 @@ class Player : AnimationSprite  //CHANGE TO ANIMATIONSSPRITE
         GameObject[] collisions = GetCollisions();
         for (int i = 0; i < collisions.Length; i++)
         {
-            //if (Input.GetKey(Key.Q))
-            //{
-                if (collisions[i] is Barrel )
-                {
-                    Barrel barrel = (Barrel) collisions[i];
-                    if (barrel.canHide)                     //set to false when releasing X
-                    {
-                        isHiding = true;
-                        barrel.SetXY(this.x, this.y);
-                    }
-                    else isHiding = false;
-                }
-                
-                
 
                 if (collisions[i] is PickUp)
                 {
-                    (game as MyGame).coinCount++;
+                    // if we need pickUps?
                     collisions[i].LateDestroy();
                 }
 
                 if (collisions[i] is Enemy)
                 {
-                    //Console.WriteLine("COLLIDING with Enemy");
-                    //collisions[i].LateDestroy();
+                    
+                    Enemy enemy = (Enemy)collisions[i];
+                    (game as MyGame).LoadLevel(enemy.currentLevelName);
+                    
                 }
                 if (collisions[i] is Door)
                 {
@@ -106,29 +96,21 @@ class Player : AnimationSprite  //CHANGE TO ANIMATIONSSPRITE
                         //Console.WriteLine("go through door");           //also press Q to make it work
                     }
                 }
-                if (collisions[i] is Button)
+             
+                if (collisions[i] is Barrel)
                 {
-                    //Console.WriteLine("player at button");
+                    Barrel barrel = (Barrel)collisions[i];
+                    
+                    if (barrel.canHide)                     //set to false when releasing X
+                    {
+                        isHiding = true;
+                        barrel.SetXY(this.x, this.y);
+                    }
+                    else isHiding = false;
                 }
-            //}
+            
         }
 
-        
-        //player screenx = x + player.x;
-        int boundary = 400;
-        //scroll left
-        if (x + game.x < boundary)
-        {
-            game.x = boundary - x;
-        }
-        
-        //scroll right
-        if (x + game.x > game.width - boundary)
-        {
-            game.x = game.width - boundary - x;
-        }
-
-       
     }
 
     private void Movement()
@@ -136,13 +118,13 @@ class Player : AnimationSprite  //CHANGE TO ANIMATIONSSPRITE
         float dx = 0;
         vy += GRAVITY;
 
-        if (Input.GetKeyDown(Key.SPACE) && grounded)
+        if (Input.GetKeyDown(Key.SPACE) && grounded || Input.GetKeyDown(Key.UP) && grounded)
         {
             vy = -jumpStrength;
         }
 
 
-        if (Input.AnyKey())
+        if (Input.GetKey(Key.DOWN) || Input.GetKey(Key.UP) || Input.GetKey(Key.RIGHT) || Input.GetKey(Key.LEFT))
         {
             isMoving = true;                        //for MovementAnimation
 
@@ -174,9 +156,9 @@ class Player : AnimationSprite  //CHANGE TO ANIMATIONSSPRITE
         else isMoving = false;
 
         MoveUntilCollision(dx, 0);                  //other collision objects might have to be put at collider.isTrigger
-        Collision col = MoveUntilCollision(0, vy);
+        Collision yCol = MoveUntilCollision(0, vy);
         grounded = false;
-        if (col != null)                            // if vy is colliding then don't keep increasing vy by gravity 
+        if (yCol != null)                            // if vy is colliding then don't keep increasing vy by gravity 
         {
             grounded = true;
             vy = 0;
@@ -185,15 +167,15 @@ class Player : AnimationSprite  //CHANGE TO ANIMATIONSSPRITE
     }
     private void MovementAnimation()
     {
-        if (isMoving && facing == Facing.DOWN) { SetCycle(40, 10, 50); }
-        if (isMoving && facing == Facing.LEFT) { SetCycle(50, 10, 50); }
-        if (isMoving && facing == Facing.UP) { SetCycle(60, 10, 50); }
-        if (isMoving && facing == Facing.RIGHT) { SetCycle(70, 10, 50); }
+        if (isMoving && facing == Facing.DOWN) { SetCycle(40, 10, 10); }
+        if (isMoving && facing == Facing.LEFT) { SetCycle(50, 10, 10); }
+        if (isMoving && facing == Facing.UP) { SetCycle(60, 10, 10); }
+        if (isMoving && facing == Facing.RIGHT) { SetCycle(70, 10, 10); }
 
-        if (!isMoving && facing == Facing.DOWN) { SetCycle(0, 3, 50); }
-        if (!isMoving && facing == Facing.LEFT) { SetCycle(10, 3, 50); }
-        if (!isMoving && facing == Facing.UP) { SetCycle(20, 1, 50); }
-        if (!isMoving && facing == Facing.RIGHT) { SetCycle(30, 3, 50); }
+        if (!isMoving && facing == Facing.DOWN) { SetCycle(0, 3, 10); }
+        if (!isMoving && facing == Facing.LEFT) { SetCycle(10, 3, 10); }
+        if (!isMoving && facing == Facing.UP) { SetCycle(20, 1, 10); }
+        if (!isMoving && facing == Facing.RIGHT) { SetCycle(30, 3, 10); }
     }
 
     //slowing animation: setcyle( , , frameStay) frameStay/ (here) 60 frames plays animation

@@ -30,7 +30,7 @@ public void Press() {
 }
 
 // Called while linking:
-publicx void IncreaseTargets() {
+public void IncreaseTargets() {
 	buttonCounter++;
 }
 ------------------------------------
