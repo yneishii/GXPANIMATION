@@ -38,17 +38,13 @@ public class MyGame : Game
 			//startLevel = saveLevel;
 			//AddChild(startLevel);
         }
-		
-		
-		
+	
 	}
 
 	void CheckLoadLevel()		//what is difference between checkLoadLevel (OnAfterStep)
     {
 		if (nextLevelName != null)
         {
-			//LoadLevel(nextLevel);
-			//saveLevelName = startLevel.currentLevelName;
 			DestroyAll();                                       //startLevel = null
 			startLevel = new Level(nextLevelName);
 			AddChild(startLevel);                     //next Level is maps
@@ -92,4 +88,4 @@ public class MyGame : Game
 	{
 		new MyGame().Start();                   // Create a "MyGame" and start it
 	}
-}
+}	

@@ -53,13 +53,13 @@ class Player : AnimationSprite  //CHANGE TO ANIMATIONSSPRITE
     private void Update()
     {
         //slow down movement if player is moving in barrel
-        if(isHiding)
+        if (isHiding)
         {
             xSpeed = xSpeedBarrel;
-            jumpStrength = _jumpStrengthBarrel; 
+            jumpStrength = _jumpStrengthBarrel;
         }
         //set movement back to original speed
-        else 
+        else
         {
             jumpStrength = _jumpStrength;
             xSpeed = _xSpeed;
@@ -72,45 +72,49 @@ class Player : AnimationSprite  //CHANGE TO ANIMATIONSSPRITE
         for (int i = 0; i < collisions.Length; i++)
         {
 
-                if (collisions[i] is PickUp)
-                {
-                    // if we need pickUps?
-                    collisions[i].LateDestroy();
-                }
+            if (collisions[i] is PickUp)
+            {
+                // if we need pickUps?
+                collisions[i].LateDestroy();
+            }
 
-                if (collisions[i] is Enemy)
-                {
-                    
-                    Enemy enemy = (Enemy)collisions[i];
-                    (game as MyGame).LoadLevel(enemy.currentLevelName);
-                    
-                }
-                if (collisions[i] is Door)
-                {
-                    Door door = (Door)collisions[i];
-                    //Console.WriteLine("player at LABEL {0}, MAP {1}", door.Label, door.NextMap);
+            if (collisions[i] is Enemy)
+            {
+                /*
+                Enemy enemy = (Enemy)collisions[i];
+                (game as MyGame).LoadLevel(enemy.currentLevelName);
+                */
+                Console.WriteLine("collided with player, need to comment out for reset");
 
-                    if (Input.GetKeyDown(Key.UP) && door.GetNumPressed() == door.GetButtonCounter()) //NEED to check whether it works or not
-                    {
-                        (game as MyGame).LoadLevel(door.NextMap);
-                        //Console.WriteLine("go through door");           //also press Q to make it work
-                    }
-                }
-             
-                if (collisions[i] is Barrel)
+            }
+            if (collisions[i] is Door)
+            {
+                Door door = (Door)collisions[i];
+                //Console.WriteLine("player at LABEL {0}, MAP {1}", door.Label, door.NextMap);
+
+                if (Input.GetKeyDown(Key.UP) && door.GetNumPressed() == door.GetButtonCounter()) //NEED to check whether it works or not
                 {
-                    Barrel barrel = (Barrel)collisions[i];
-                    
-                    if (barrel.canHide)                     //set to false when releasing X
-                    {
-                        isHiding = true;
-                        barrel.SetXY(this.x, this.y);
-                    }
-                    else isHiding = false;
+                    (game as MyGame).LoadLevel(door.NextMap);
+                    //Console.WriteLine("go through door");           //also press Q to make it work
                 }
-            
+            }
+
+            if (collisions[i] is Barrel)
+            {
+                Barrel barrel = (Barrel)collisions[i];
+                //problem: enemies can walk over barrels in that time
+                if (barrel.canHide && !isHiding)                     //set isHiding to false when releasing X
+                {
+                    Console.WriteLine(isHiding);
+                    isHiding = true;
+                    barrel.SetXY(this.x, this.y);
+                }
+                else isHiding = false;
+                Console.WriteLine(isHiding);
+            }
         }
 
+        
     }
 
     private void Movement()

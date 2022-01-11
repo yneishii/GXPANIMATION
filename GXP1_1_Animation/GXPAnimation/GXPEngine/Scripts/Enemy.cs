@@ -21,9 +21,8 @@ class Enemy : AnimationSprite
     Sprite visionLeft;
     GameObject target;
     Collision xCol;
-    //Sprite vision;
-    //GameObject test;
-
+    List<GameObject> TilesInSight;
+    Level level = null;
     public string currentLevelName = null;
 
     public Enemy(TiledObject obj) : base("Chrom.png", 8, 4) //when Enemy is called as rectangle in Tiled
@@ -55,6 +54,7 @@ class Enemy : AnimationSprite
         currentLevelName = obj.GetStringProperty("map", "");                
         Console.WriteLine("CURRENT LEVEL NAME " + currentLevelName);
         Initialize();
+       
     }
     
     public Enemy(string imageFile, int cols, int rows, TiledObject obj) : base(imageFile, cols, rows)
@@ -75,7 +75,12 @@ class Enemy : AnimationSprite
         vision.alpha = 0.2f;
         */
     }
-    
+
+    public void SetLevel (Level levelObject) 
+    {
+        level = levelObject;
+    }
+
     private void Initialize() 
     {
         SetOrigin(width / 2, height / 2);
@@ -96,120 +101,118 @@ class Enemy : AnimationSprite
     }
     private void Update()
     {
+
         SetCycle(5, 3, 10); // if 240 HRz set to 50
         Animate();
 
-        //vision.rotation++;
+        TilesInSight = level.GetTilesInSight(this); // level reference?????
 
-        if (target != null)
-        {
-            float dx = target.x - x;
-            float dy = target.y - y;
-            float angle = Mathf.Atan2(dy, dx) * 180 / Mathf.PI; // All will be revealed during physics... (or just google) // not needed for the game for now
-            //vision.rotation = angle;
-            // todo: scale the vision ray length such that it ends up exactly at the player
-            // also todo: check collisions for the vision ray
-            if (Input.GetKey(Key.F))
+
+            if (target != null)
             {
-                Console.WriteLine("Distance to target: {0},{1} angle: {2}", dx, dy, angle);
-            }
-        }
-        else
-        {
-            Console.WriteLine("No target set!");
-        }
-
-        vy += GRAVITY;
-        Collision yCol = MoveUntilCollision(0, vy);
-        if (yCol != null)
-        {
-            vy = 0;
-        }
-
-
-        ///////////////////////////// X MOVEMENT /////////////////////////////////////
-        ///
-
-
-        if (!(target as Player).isHiding/*Problem!!*/ || (target as Player).isHiding || (!(target.x - x < rayLength) && x - target.x <= 0 && walkRight) || (!(target.x - x > -rayLength) && target.x - x <= 0 && !walkRight))
-        {
-            Console.WriteLine("MoveUntilCollision");
-            xCol = MoveUntilCollision(vx, 0);  //will it always give null?? otherwise moveunitlcollision always active
-        }
-
-        if (y - target.y == 0) // player and enemy on the same height
-        {
-            if (walkRight && target.x - x < rayLength && x - target.x <= 0 || 
-                walkRight && target.x - x < rayLength && x - target.x <= 0 && (target as Player).isHiding && (target as Player).isMoving) 
-            {
-                Console.WriteLine("this one");
-                Move(fastvx, 0); //doesnt work bc, target x and x look at the POSITION (the greater the x position, the faster the enemey becomes!!!)
-                visionRight.visible = true;
-                visionLeft.visible = false;
-            }
-            else if (!walkRight && target.x - x > -rayLength && target.x - x <= 0 ||
-                !walkRight && target.x - x > -rayLength && target.x - x <= 0 && (target as Player).isHiding && (target as Player).isMoving) 
-            {
-                Console.WriteLine("else if");
-                Move(-fastvx, 0);            //how to make movement towards player but speed changes
-                visionRight.visible = false;
-                visionLeft.visible = true;
-            }
-            else Console.WriteLine("none");
-        }
-        Console.WriteLine("is moving " +(target as Player).isMoving);
-        Console.WriteLine("walking RIGHT: " + walkRight);
-
-
-        if (xCol != null)
-        {
-            vx = -vx;
-
-            if (!walkRight)
-            {
-                Mirror(true, false);    //turn right
-                visionRight.visible = true;
-                visionLeft.visible = false;
-                walkRight = true;
-
+                float dx = target.x - x;
+                float dy = target.y - y;
+                float angle = Mathf.Atan2(dy, dx) * 180 / Mathf.PI; // All will be revealed during physics... (or just google) // not needed for the game for now
+                //vision.rotation = angle;
+                // todo: scale the vision ray length such that it ends up exactly at the player
+                // also todo: check collisions for the vision ray
+                if (Input.GetKey(Key.F))
+                {
+                    Console.WriteLine("Distance to target: {0},{1} angle: {2}", dx, dy, angle);
+                }
             }
             else
             {
-                Mirror(false, false); //turn left
-                visionRight.visible = false;
-                visionLeft.visible = true;
-                walkRight = false;
-
+                Console.WriteLine("No target set!");
             }
-        }
-        
 
-
-        
-
-        /*
-        GameObject[] collisions = GetCollisions();
-        for (int i = 0; i < collisions.Length; i++)
-        {
-            if (collisions[i] is ColTile  || collisions[i] is Barrel)           //enemy falls through because colTile isnt Triggercollider
+            vy += GRAVITY;
+            Collision yCol = MoveUntilCollision(0, vy);
+            if (yCol != null)
             {
-                //Console.WriteLine("Enemy Colliding");
+                vy = 0;
+            }
+
+
+
+
+            
+            ///////////////////////////// X MOVEMENT /////////////////////////////////////
+            ///
+
+                xCol = MoveUntilCollision(vx, 0);  //will it always give null?? otherwise moveunitlcollision always active
+
+            /*
+            if (y - target.y == 0) // player and enemy on the same height
+            {
+                if ((walkRight && target.x - x < rayLength && x - target.x <= 0 && !(target as Player).isHiding) ^
+                    (walkRight && target.x - x < rayLength && x - target.x <= 0 && (target as Player).isHiding && (target as Player).isMoving)) 
+                {
+                    //Console.WriteLine("this one");
+                    Move(fastvx, 0); //doesnt work bc, target x and x look at the POSITION (the greater the x position, the faster the enemey becomes!!!)
+                    visionRight.visible = true;
+                    visionLeft.visible = false;
+                }
+                else if ((!walkRight && target.x - x > -rayLength && target.x - x <= 0 && !(target as Player).isHiding) ^
+                    (!walkRight && target.x - x > -rayLength && target.x - x <= 0 && (target as Player).isMoving && (target as Player).isHiding))
+                {
+                    //Console.WriteLine("else if");
+                    Move(-fastvx, 0);            //how to make movement towards player but speed changes
+                    visionRight.visible = false;
+                    visionLeft.visible = true;
+                }
+                //else Console.WriteLine("none");
+            }
+
+
+            if (xCol != null)
+            {
                 vx = -vx;
 
                 if (!walkRight)
                 {
-                    Mirror(true, false);
+                    Mirror(true, false);    //turn right
+                    visionRight.visible = true;
+                    visionLeft.visible = false;
                     walkRight = true;
+
                 }
                 else
                 {
-                    Mirror(false, false);
+                    Mirror(false, false); //turn left
+                    visionRight.visible = false;
+                    visionLeft.visible = true;
                     walkRight = false;
+
                 }
-                break; // to prevent double collision
             }
+
+
+
+
+            /*
+            GameObject[] collisions = GetCollisions();
+            for (int i = 0; i < collisions.Length; i++)
+            {
+                if (collisions[i] is ColTile  || collisions[i] is Barrel)           //enemy falls through because colTile isnt Triggercollider
+                {
+                    //Console.WriteLine("Enemy Colliding");
+                    vx = -vx;
+
+                    if (!walkRight)
+                    {
+                        Mirror(true, false);
+                        walkRight = true;
+                    }
+                    else
+                    {
+                        Mirror(false, false);
+                        walkRight = false;
+                    }
+                    break; // to prevent double collision
+                }
+            }
+            */  
         }
-        */
     }
-}
 
