@@ -49,18 +49,36 @@ class Button : AnimationSprite
         GameObject [] collisions = GetCollisions();
         for (int i = 0; i < collisions.Length; i++)
         {
-            if (collisions[i] is Player || collisions[i] is Enemy || collisions[i] is Barrel) // add barrel
-            {        
+            if (collisions[i] is Enemy || collisions[i] is Barrel) // add barrel
+            {
                 SetCycle(1, 1);             //pressed image
                 if (targetObject is Door)   //would this work tho?
                 {
-                    targetObject.Press(); 
-                }   
+                    targetObject.Press();
+                }
             }
+            else if (collisions[i] is Player)
+            {
+               Player player = (Player)collisions[i];
+                if (!player.isHiding)   //don't press when the player is in the barrel
+                {
+                    SetCycle(1, 1);
+                    targetObject.Press();
+                }
+            }
+
+            /*else
+            {
+                if (targetObject is Door)   //would this work tho?
+                {
+                    if (targetObject.GetNumPressed() > targetObject.GetButtonCounter())
+                    targetObject.DecreaseNumPressed();
+                }
+            }
+            */
+
         }
     }
-
-
 }
 
 //init idea             buttonCounter is all foreach button in (list <Button>)buttons 

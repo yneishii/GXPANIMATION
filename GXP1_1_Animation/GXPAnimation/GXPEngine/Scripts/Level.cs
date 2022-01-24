@@ -8,7 +8,8 @@ using GXPEngine;
 using GXPEngine.Core;
 class Level : GameObject
 {
-    Door[] doors; // will this work?
+    //Tilemap Objects
+    Door[] doors; 
     Button[] buttons;
     Barrel[] barrels;
     Player player;      //needed for Tiled!
@@ -16,8 +17,10 @@ class Level : GameObject
     TiledLoader loader;
     public string currentLevelName;
 
-    private GameObject[,] backingStore; //needed for storing the coordinates of the tiles
-    private Map map;
+    //DETECTION via TILE MAP
+    private GameObject[,] backingStore; //needed for storing the coordinates of the tiles  
+    private Map map;                                                                       
+
 
     public Level(string levelName) : base()
     {
@@ -30,18 +33,18 @@ class Level : GameObject
 
     private void createLevel(bool includeImageLayers = true) 
     {
-        map = loader.map;
+        map = loader.map;                                                                //DETECTION via TILE MAP
         loader.autoInstance = true;
         loader.addColliders = false;    //no collicers for background
         loader.rootObject = game;       //image is child of game - NOT scrolling
         if (includeImageLayers) loader.LoadImageLayers();
         loader.rootObject = this;       //rest is child of level - scrolling!
         loader.addColliders = true;     //colliders for objects
-        loader.OnTileCreated += Tileloader_OnTileCreated;           //subscribe - 
-        loader.LoadTileLayers(0);                                   //main tile layer
-        loader.OnTileCreated -= Tileloader_OnTileCreated;           //unsubscribe
-       // loader.OnObjectCreated += Tileloader_OnObjectCreated;       
-;       loader.LoadObjectGroups();
+
+        //loader.OnTileCreated += Tileloader_OnTileCreated;           //subscribe         //DETECTION via TILE MAP
+        loader.LoadTileLayers(0);                                   //main tile layer 
+        //loader.OnTileCreated -= Tileloader_OnTileCreated;           //unsubscribe       //DETECTION via TILE MAP
+        loader.LoadObjectGroups();
         doors = FindObjectsOfType<Door>();
         buttons = FindObjectsOfType<Button>(); 
         barrels = FindObjectsOfType<Barrel>();
@@ -57,7 +60,6 @@ class Level : GameObject
         }
 
     }
-
     private void Update()
     {
         Scrolling();
@@ -91,7 +93,7 @@ class Level : GameObject
                     button.SetTarget(door);
                     door.IncreaseButtonCount();
                     Console.WriteLine("linking successful: door label {0} \n                    button label {1}", door.Label, button.Label);
-                    Console.WriteLine("door buttoncounter " + door.GetButtonCounter());
+                    Console.WriteLine("door buttoncounter " + door.ButtonCounter);
 
                 }
             }
@@ -101,6 +103,12 @@ class Level : GameObject
       //  Console.WriteLine("buttonCounter door1"doors[0].getButtonCounter(), doors[0].getNumPressed());
     }
 
+
+
+
+    /*
+    
+    //DETECTION via TILE MAP 
     private void Tileloader_OnTileCreated(Sprite sprite, int row, int column) // on creation TILE store: coloumn, row and its corresponding sprite
     {
         backingStore[column, row] = sprite;                                 
@@ -110,14 +118,13 @@ class Level : GameObject
     {
         int tileSize = map.TileWidth;
         Vector2 spriteIndex = new Vector2((int)(sprite.x / tileSize), (int)(sprite.y / tileSize)); //get enemy sprite coordinate
+        //System.Console.WriteLine("SpriteIndex " + spriteIndex);
 
-        System.Console.WriteLine("SpriteIndex " + spriteIndex);
-
-        Gizmos.SetColor(1, 0, 1, 1);
-        Gizmos.DrawRectangle(spriteIndex.x * tileSize + tileSize / 2, spriteIndex.y * tileSize + tileSize / 2, tileSize, tileSize, this);
-        return null;
+        //Gizmos.SetColor(1, 0, 1, 1);
+        //Gizmos.DrawRectangle(spriteIndex.x * tileSize + tileSize / 2, spriteIndex.y * tileSize + tileSize / 2, 12*tileSize, tileSize, this);
+        return null;                    //should I be returning null?*
 
     }
-
+    */
 }
 

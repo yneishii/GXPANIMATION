@@ -10,7 +10,7 @@ using GXPEngine;
 
 class Barrel : AnimationSprite
 {
-    private const float GRAVITY = 0.2f;
+    private const float GRAVITY = 4f;
     float vy;
     //public Sprite sensor; // not in use
     public bool canHide = false;        //called in Player
@@ -41,15 +41,13 @@ class Barrel : AnimationSprite
             vy = 0;
         }
 
-        if (Input.GetKey(Key.X))
+        if (Input.GetKey(Key.X)) //HIDING
         {
-            canHide = true;
-            collider.isTrigger = true;  
+            canHide = true;  
         }
         else
         {
             canHide = false;
-            collider.isTrigger = false;
         }
         
         

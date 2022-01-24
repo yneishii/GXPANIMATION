@@ -13,10 +13,10 @@ public class MyGame : Game
 	public string nextLevelName = null; //name given in 
 	public int buttonPressed = 0;		//increasing through door class, Condition: ONLY ONE DOOR IN LEVEL
 
-	public MyGame() : base(1000, 600, false)     // Create a window that's 800x600 and NOT fullscreen
+	public MyGame() : base(1280, 720, false)     // Create a window that's 800x600 and NOT fullscreen
 	{
 		OnAfterStep += CheckLoadLevel;
-		startLevel = new Level("map1.tmx");		//startLevel
+		startLevel = new Level("map4.tmx");     //startLevel
 		AddChild(startLevel);
 
 		createUI();
@@ -25,7 +25,7 @@ public class MyGame : Game
 	// For every game object, Update is called every frame, by the engine:
 	void Update()
 	{
-
+		
 		//RESTART LEVEL HOT KEY	
 		if (Input.GetKeyDown(Key.LEFT_SHIFT))			
         {
@@ -51,7 +51,6 @@ public class MyGame : Game
 			createUI();
 			nextLevelName = null;
 		}
-	
     }
 
 	public void LoadLevel(string nextLevelName) //from 3rd recording level is a child
@@ -79,8 +78,9 @@ public class MyGame : Game
 		buttonPressedUI = new EasyDraw(width - 200, 30, false);
 		AddChild(buttonPressedUI);
         Console.WriteLine("UI created");
+		ShowUI(buttonPressed);
 	}
-	public void ShowUI(int buttonPressed)
+	public void ShowUI(int buttonPressed)	// make a Hud: Children are UIs, whenever number changes: Redraw UI --> Look at Lecture 4 
     {
 		buttonPressedUI.Text("Button pressed: " + buttonPressed);
     }

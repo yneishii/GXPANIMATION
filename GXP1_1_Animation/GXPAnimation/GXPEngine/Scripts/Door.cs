@@ -15,6 +15,19 @@ class Door : AnimationSprite
     private int numPressed = 0; //amount of pressed Buttons
     private int buttonCounter = 0; //amount of buttons the door is linked with
 
+    HUD myHUD;
+
+    public int NumPressed 
+    {
+        get { return numPressed; }
+        set { numPressed = 0; }
+    }
+    public int ButtonCounter
+    {
+        get { return buttonCounter; }
+        set { buttonCounter = 0; }
+    }
+
     public string Label 
     {
         get { return label; }
@@ -63,39 +76,47 @@ class Door : AnimationSprite
     public void Press()
     {
         numPressed++;
-        
+        Console.WriteLine("numPressed {0} ", NumPressed );
+        // TODO: update UI from here...?
+
+        if (myHUD == null) myHUD = game.FindObjectOfType<HUD>(); // not great perhaps
+        if (myHUD != null)
+        {
+            // update HUD info...
+            Console.WriteLine("HUD update: " + buttonCounter);
+
+            // NOTE: this will break if you add multiple doors...
+        }
+        else
+        {
+            Console.WriteLine("Warning! no HUD found");
+        }
     }
 
     //called in level
     public void IncreaseButtonCount()
     {
         buttonCounter++;
+
     }
     private void Update()
     {
-
         //Problem door open and closes repeatedly
         if (numPressed == buttonCounter)
         {
             //OPEN DOOR
-            SetCycle(1, 1);  
-            
+            SetCycle(1, 1);
         }
-        else
+        else 
         {
+            //CLOSE DOOR
             SetCycle(0, 1);
-            numPressed = 0;    //close door
-            
+          
+           // Console.WriteLine("close dorr");
         }
-    }
 
-    public int GetNumPressed() 
-    {
-        return numPressed;
-    }
-    public int GetButtonCounter()
-    {
-        return buttonCounter;
+        //Console.WriteLine("Pressed {0}, Buttons  {1} ", numPressed, buttonCounter);
+        numPressed = 0;
     }
     
 }

@@ -10,15 +10,17 @@ using GXPEngine;
 
 class Player : AnimationSprite  //CHANGE TO ANIMATIONSSPRITE
 {
+    EasyDraw easydraw;
+    Camera camera;
     private const float GRAVITY = 4f; //at 240 - 0.5
     private const int NONE = 0;
     private const int LEFT = 1;
     private const int RIGHT = 2;
     private const int UP = 3;
     private const int DOWN = 4;
-    float xSpeed = 10;              //at 240 - 2
-    float _xSpeed;                  //to store original xSpeed
-    float xSpeedBarrel = 0.9f;      //speed when hiding in barrel
+    float xSpeed = 6.8f;              //player's speed is slightly faster than enemy's run speed
+    float saveXSpeed;                  //to store original xSpeed, 
+    float xSpeedBarrel = 3f;      //speed when hiding in barrel
     float vy;                       //force for falling
     float jumpStrength = 50;        //at 240 - 8
     float _jumpStrength;            //to store original jumpStrength
@@ -43,11 +45,21 @@ class Player : AnimationSprite  //CHANGE TO ANIMATIONSSPRITE
 
     private void Initialize() 
     {
+        
+        easydraw = new EasyDraw(200, 100, false);
+        easydraw.Clear(200);
+        //easydraw.SetOrigin
+        camera = new Camera(0, 0, 1280, 720);
+        camera.scale = 5f;
+        //camera.AddChild(easydraw);
+        AddChild(camera);
+        
         facing = Facing.DOWN;
         SetOrigin(width / 2, height / 2);
         SetScaleXY(0.4f);
-        _xSpeed = xSpeed;
+        saveXSpeed = xSpeed;
         _jumpStrength = jumpStrength;
+        collider.isTrigger = true;
     }
 
     private void Update()
@@ -62,7 +74,7 @@ class Player : AnimationSprite  //CHANGE TO ANIMATIONSSPRITE
         else
         {
             jumpStrength = _jumpStrength;
-            xSpeed = _xSpeed;
+            xSpeed = saveXSpeed;
         }
 
         Movement();
@@ -78,42 +90,39 @@ class Player : AnimationSprite  //CHANGE TO ANIMATIONSSPRITE
                 collisions[i].LateDestroy();
             }
 
+            if (collisions[i] is Barrel)
+            {
+                Barrel barrel = (Barrel)collisions[i];
+                //problem: enemies can walk over barrels in that time
+                if (barrel.canHide)                     //set isHiding to false when releasing X
+                {
+                    //Console.WriteLine(isHiding);
+                    isHiding = true;
+                    barrel.SetXY(this.x, this.y);                   //gameplay problem: two barrels can be set at players position
+                }
+                else isHiding = false;
+                //Console.WriteLine(isHiding);
+            }
+
             if (collisions[i] is Enemy)
             {
-                /*
                 Enemy enemy = (Enemy)collisions[i];
-                (game as MyGame).LoadLevel(enemy.currentLevelName);
-                */
-                Console.WriteLine("collided with player, need to comment out for reset");
-
+                if (!isHiding || isHiding && isMoving)
+                {
+                    (game as MyGame).LoadLevel(enemy.currentLevelName);     //restart level
+                }
             }
             if (collisions[i] is Door)
             {
                 Door door = (Door)collisions[i];
                 //Console.WriteLine("player at LABEL {0}, MAP {1}", door.Label, door.NextMap);
 
-                if (Input.GetKeyDown(Key.UP) && door.GetNumPressed() == door.GetButtonCounter()) //NEED to check whether it works or not
+                if (Input.GetKeyDown(Key.UP) && door.NumPressed == door.ButtonCounter) //NEED to check whether it works or not
                 {
-                    (game as MyGame).LoadLevel(door.NextMap);
-                    //Console.WriteLine("go through door");           //also press Q to make it work
+                    (game as MyGame).LoadLevel(door.NextMap);   //nextMap is set in Tiled        
                 }
-            }
-
-            if (collisions[i] is Barrel)
-            {
-                Barrel barrel = (Barrel)collisions[i];
-                //problem: enemies can walk over barrels in that time
-                if (barrel.canHide && !isHiding)                     //set isHiding to false when releasing X
-                {
-                    Console.WriteLine(isHiding);
-                    isHiding = true;
-                    barrel.SetXY(this.x, this.y);
-                }
-                else isHiding = false;
-                Console.WriteLine(isHiding);
             }
         }
-
         
     }
 
@@ -155,7 +164,6 @@ class Player : AnimationSprite  //CHANGE TO ANIMATIONSSPRITE
                 //game.x += xSpeed;
                 dx -= xSpeed;
             }
-
         }
         else isMoving = false;
 
@@ -171,15 +179,15 @@ class Player : AnimationSprite  //CHANGE TO ANIMATIONSSPRITE
     }
     private void MovementAnimation()
     {
-        if (isMoving && facing == Facing.DOWN) { SetCycle(40, 10, 10); }
-        if (isMoving && facing == Facing.LEFT) { SetCycle(50, 10, 10); }
-        if (isMoving && facing == Facing.UP) { SetCycle(60, 10, 10); }
-        if (isMoving && facing == Facing.RIGHT) { SetCycle(70, 10, 10); }
+        if (isMoving && facing == Facing.DOWN) { SetCycle(40, 10, 5); }
+        if (isMoving && facing == Facing.LEFT) { SetCycle(50, 10, 5); }
+        if (isMoving && facing == Facing.UP) { SetCycle(60, 10, 5); }
+        if (isMoving && facing == Facing.RIGHT) { SetCycle(70, 10, 5); }
 
-        if (!isMoving && facing == Facing.DOWN) { SetCycle(0, 3, 10); }
-        if (!isMoving && facing == Facing.LEFT) { SetCycle(10, 3, 10); }
-        if (!isMoving && facing == Facing.UP) { SetCycle(20, 1, 10); }
-        if (!isMoving && facing == Facing.RIGHT) { SetCycle(30, 3, 10); }
+        if (!isMoving && facing == Facing.DOWN) { SetCycle(0, 3, 5); }
+        if (!isMoving && facing == Facing.LEFT) { SetCycle(10, 3, 5); }
+        if (!isMoving && facing == Facing.UP) { SetCycle(20, 1, 5); }
+        if (!isMoving && facing == Facing.RIGHT) { SetCycle(30, 3, 5); }
     }
 
     //slowing animation: setcyle( , , frameStay) frameStay/ (here) 60 frames plays animation

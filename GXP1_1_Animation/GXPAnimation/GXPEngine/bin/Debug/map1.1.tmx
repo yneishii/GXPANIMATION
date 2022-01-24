@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="30" height="16" tilewidth="64" tileheight="64" infinite="0" nextlayerid="11" nextobjectid="80">
+ <tileset firstgid="1" name="square" tilewidth="64" tileheight="64" tilecount="1" columns="1">
+  <image source="square.png" width="64" height="64"/>
+ </tileset>
+ <tileset firstgid="2" name="colors" tilewidth="64" tileheight="64" tilecount="1" columns="1">
+  <image source="colors.png" width="64" height="64"/>
+ </tileset>
+ <tileset firstgid="3" name="door" tilewidth="348" tileheight="612" tilecount="1" columns="1">
+  <image source="door.png" width="348" height="612"/>
+ </tileset>
+ <tileset firstgid="4" name="doorbetter" tilewidth="103" tileheight="153" tilecount="2" columns="2">
+  <image source="doorbetter.png" width="206" height="153"/>
+ </tileset>
+ <tileset firstgid="6" name="barrel" tilewidth="252" tileheight="331" tilecount="1" columns="1">
+  <image source="barrel.png" width="252" height="331"/>
+ </tileset>
+ <tileset firstgid="7" name="button" tilewidth="551" tileheight="500" tilecount="2" columns="2">
+  <image source="button.png" width="1104" height="500"/>
+ </tileset>
+ <imagelayer id="9" name="bg" locked="1">
+  <image source="forestbg.png" width="6400" height="1024"/>
+ </imagelayer>
+ <layer id="1" name="Tile Layer 1" width="30" height="16">
+  <data encoding="csv">
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,1,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,
+1,1,1,1,1,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,
+1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+</data>
+ </layer>
+ <objectgroup id="2" name="Object Layer 1">
+  <object id="22" name="Door B" type="Door" gid="4" x="705.198" y="982.445" width="95" height="145">
+   <properties>
+    <property name="label" value="B"/>
+    <property name="nextMap" value="map2.tmx"/>
+   </properties>
+  </object>
+  <object id="59" name="used Button " gid="7" x="578.145" y="830.84" width="58.256" height="52.8639">
+   <properties>
+    <property name="label" value="A"/>
+   </properties>
+  </object>
+  <object id="77" name="Button B" type="Button" gid="7" x="1348.87" y="571.568" width="58.256" height="52.8639">
+   <properties>
+    <property name="label" value="B"/>
+   </properties>
+  </object>
+  <object id="78" name="Button B" type="Button" gid="7" x="904.872" y="381.568" width="58.256" height="52.8639">
+   <properties>
+    <property name="label" value="B"/>
+   </properties>
+  </object>
+  <object id="79" name="Button B" type="Button" gid="7" x="1222.87" y="763.568" width="58.256" height="52.8639">
+   <properties>
+    <property name="label" value="B"/>
+   </properties>
+  </object>
+  <object id="28" name="Player" type="Player" x="585.268" y="134.927" width="43.3333" height="54.3333"/>
+  <object id="32" name="Barrel 1" type="Barrel" gid="6" x="570.456" y="832.175" width="70.5833" height="72.6667"/>
+  <object id="69" name="Barrel 2" type="Barrel" gid="6" x="1778.28" y="376.769" width="70.5833" height="72.6667"/>
+  <object id="73" name="Barrel 3" type="Barrel" gid="6" x="742.708" y="573.667" width="70.5833" height="72.6667"/>
+  <object id="74" name="Barrel 4" type="Barrel" gid="6" x="1770.71" y="765.667" width="70.5833" height="72.6667"/>
+  <object id="33" name="Enemy 1" type="Enemy" x="1254.88" y="867.333" width="62.6667" height="68.3333">
+   <properties>
+    <property name="map" value="map1.1.tmx"/>
+    <property name="walkRight" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="70" name="Enemy 1" type="Enemy" x="963.187" y="503.052" width="64.9167" height="68.3333">
+   <properties>
+    <property name="map" value="map1.1.tmx"/>
+    <property name="walkRight" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="71" name="Enemy 1" type="Enemy" x="1674.21" y="307.167" width="64.9167" height="68.3333">
+   <properties>
+    <property name="map" value="map1.1.tmx"/>
+    <property name="walkRight" type="bool" value="true"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>
