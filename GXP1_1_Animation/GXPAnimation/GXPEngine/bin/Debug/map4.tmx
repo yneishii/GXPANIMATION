@@ -12,7 +12,7 @@
  <tileset firstgid="6" name="barrel" tilewidth="252" tileheight="331" tilecount="1" columns="1">
   <image source="barrel.png" width="252" height="331"/>
  </tileset>
- <imagelayer id="4" name="bg" offsetx="-2581.82" offsety="5.68434e-14">
+ <imagelayer id="4" name="bg" offsetx="-2807.82" offsety="-20">
   <image source="forestbg.png" width="6400" height="1024"/>
  </imagelayer>
  <layer id="1" name="Tile Layer 1" width="70" height="16">
@@ -39,7 +39,7 @@
   <object id="1" name="Door A" type="Door" gid="2" x="2005.55" y="211.485" width="103" height="153">
    <properties>
     <property name="label" value="A"/>
-    <property name="nextMap" value="map3.tmx"/>
+    <property name="nextMap" value="Finish.tmx"/>
    </properties>
   </object>
   <object id="2" name="Button A" type="Button" gid="4" x="65" y="956.667" width="87" height="60">

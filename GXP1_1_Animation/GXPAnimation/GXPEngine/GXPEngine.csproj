@@ -42,7 +42,6 @@
   <ItemGroup>
     <Compile Include="Barrel.cs" />
     <Compile Include="Scripts\ExitDoor.cs" />
-    <Compile Include="Scripts\HUD.cs" />
     <Compile Include="Scripts\Level.cs" />
     <Compile Include="Scripts\Button.cs" />
     <Compile Include="GXPEngine\AddOns\Gizmos.cs" />

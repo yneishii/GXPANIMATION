@@ -10,15 +10,17 @@ using GXPEngine;
 
 class Player : AnimationSprite  //CHANGE TO ANIMATIONSSPRITE
 {
-    Sprite vignette;
-    Camera camera;
-    private const float GRAVITY = 4f;       //for 60 Hz
+    //game is supposed to run at 60 Hz refresh rate
 
+    Sprite vignette;                        //vignette effect over camera
+    Camera camera = new Camera(0, 0, 1280, 720);                          //camera follows the player
+
+    private const float GRAVITY = 4f;       
     float xSpeed = 6.8f;                    //player's speed is slightly faster than enemy's run speed
     float saveXSpeed;                       //to store original xSpeed, 
     float xSpeedBarrel = 3f;                //speed when hiding in barrel
     float vy;                               //force for falling
-    float jumpStrength = 50;                //at 240 - 8
+    float jumpStrength = 50;                
     float _jumpStrength;                    //to store original jumpStrength
     float _jumpStrengthBarrel = 1f;         //jumpStrength when hiding in barrel
     bool grounded;                          //check whether the player is on the ground
@@ -46,7 +48,7 @@ class Player : AnimationSprite  //CHANGE TO ANIMATIONSSPRITE
     private void Initialize() 
     {
         //Camera that follows the player
-        camera = new Camera(0, 0, 1280, 720);                       //set camera to screen size of mygame
+        camera = new Camera(0, 0, game.width, game.height);                       //set camera to screen size of mygame
         camera.scale = 5f;                                          //zoom factor for camera, bigger number: bigger zoom out factor
 
         //Vignette Effect when Hiding in Barrel
@@ -94,7 +96,7 @@ class Player : AnimationSprite  //CHANGE TO ANIMATIONSSPRITE
                 Barrel barrel = (Barrel)collisions[i];
                 if (barrel.canHide)                                      //set isHiding to false when releasing X
                 {
-                    if (!isHiding) { takeBarrelSound.Play(); }                 //play barrel take sound only once
+                    if (!isHiding) { takeBarrelSound.Play(); }           //play barrel take sound only once
                     isHiding = true;
                     vignette.visible = true;                             //show vignette
                     barrel.SetXY(this.x, this.y);                        //warning: two barrels can be set at players position
@@ -120,7 +122,7 @@ class Player : AnimationSprite  //CHANGE TO ANIMATIONSSPRITE
             if (collisions[i] is Door)
             {
                 Door door = (Door)collisions[i];
-                if (Input.GetKeyDown(Key.UP) && door.NumPressed == door.ButtonCounter) //NEED to check whether it works or not
+                if (Input.GetKeyDown(Key.UP) && door.NumPressed == door.ButtonCounter) 
                 {
                     runningSound.Play();
                     (game as MyGame).LoadLevel(door.NextMap);   //nextMap is set in Tiled        
@@ -163,6 +165,7 @@ class Player : AnimationSprite  //CHANGE TO ANIMATIONSSPRITE
         }
         else isMoving = false;
 
+
         MoveUntilCollision(dx, 0);                  //other collision objects might have to be put at collider.isTrigger
         Collision yCol = MoveUntilCollision(0, vy);
         grounded = false;
@@ -172,7 +175,7 @@ class Player : AnimationSprite  //CHANGE TO ANIMATIONSSPRITE
             vy = 0;
         }
     }
-    private void MovementAnimation()
+    private void MovementAnimation()                //set animation cycles
     {
         if (isMoving && facing == Facing.DOWN) { SetCycle(40, 10, 5); }
         if (isMoving && facing == Facing.LEFT) { SetCycle(50, 10, 5); }

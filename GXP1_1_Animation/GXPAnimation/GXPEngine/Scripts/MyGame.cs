@@ -30,7 +30,6 @@ public class MyGame : Game
 		if (Input.GetKeyDown(Key.LEFT_SHIFT))			
         {
 			saveLevelName = startLevel.currentLevelName;	
-            Console.WriteLine("restart startLevel");
 			DestroyAll();
 			startLevel = new Level (saveLevelName);			//create new startLevel which is the currentLevel
 			AddChild(startLevel);
@@ -62,7 +61,6 @@ public class MyGame : Game
 		foreach (GameObject child in children)
 		{
 			child.Destroy();
-            Console.WriteLine("children destroyed");
 		}
 	}
 

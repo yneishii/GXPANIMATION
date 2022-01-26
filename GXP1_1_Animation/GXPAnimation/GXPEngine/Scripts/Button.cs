@@ -7,8 +7,8 @@ using TiledMapParser;
 using GXPEngine;
 class Button : AnimationSprite
 {
-    private string label;
-    private Door targetObject;                                      //targetObject : has to be door!
+    private string label;        //label needed for linking button with door
+    private Door targetObject;   //targetObject : has to be door!
     public string Label
     {
         get { return label; }
@@ -22,7 +22,7 @@ class Button : AnimationSprite
     public Button(string Imagefile, int cols, int rows, TiledObject obj = null) : base(Imagefile, cols, rows)  
     {
         Initialize();
-        label = obj.GetStringProperty("label", "");                                                     //should this be in initialize?
+        label = obj.GetStringProperty("label", "");                 //label is set in Tiled
         if (label == "") 
         {
             Console.WriteLine("Button: no label/ something went wrong in Tiled");
@@ -45,14 +45,14 @@ class Button : AnimationSprite
     }
     private void Update()
     {
-        SetCycle(0, 1);
+        SetCycle(0, 1);                             //unpressed image
         GameObject [] collisions = GetCollisions();
         for (int i = 0; i < collisions.Length; i++)
         {
-            if (collisions[i] is Enemy || collisions[i] is Barrel) // add barrel
+            if (collisions[i] is Enemy || collisions[i] is Barrel) 
             {
-                SetCycle(1, 1);             //pressed image
-                if (targetObject is Door)   //would this work tho?
+                SetCycle(1, 1);                     //pressed image
+                if (targetObject is Door)           //would this work tho?
                 {
                     targetObject.Press(); 
                 }
@@ -60,7 +60,7 @@ class Button : AnimationSprite
             else if (collisions[i] is Player)
             {
                 Player player = (Player)collisions[i];
-                if (!player.isHiding)   //don't press when the player is in the barrel
+                if (!player.isHiding)               //don't press when the player is in the barrel
                 {
                     SetCycle(1, 1);
                     targetObject.Press();

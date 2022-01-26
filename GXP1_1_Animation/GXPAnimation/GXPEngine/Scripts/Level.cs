@@ -11,16 +11,12 @@ class Level : GameObject
     //Tilemap Objects
     Door[] doors; 
     Button[] buttons;
-    Barrel[] barrels;
+    Barrel[] barrels;   //needed for Tiled!
     Player player;      //needed for Tiled!
     Enemy []enemies;
     TiledLoader loader;
     public string currentLevelName;
-
-    //DETECTION via TILE MAP
-    //private GameObject[,] backingStore; //needed for storing the coordinates of the tiles  
-    //private Map map;                                                                       
-
+                                                                     
 
     public Level(string levelName) : base()
     {

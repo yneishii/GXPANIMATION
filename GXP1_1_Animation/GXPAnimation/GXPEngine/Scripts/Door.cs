@@ -16,7 +16,6 @@ class Door : AnimationSprite
     bool isDoorOpen = false;
     Sound openDoor = new Sound("sounds/doorOpen.wav");
 
-    HUD myHUD;                      //feedback on how many buttons are pressed
 
     public int NumPressed 
     {
@@ -76,21 +75,6 @@ class Door : AnimationSprite
     public void Press()
     {
         numPressed++;
-        //Console.WriteLine("numPressed {0} ", NumPressed );
-        // TODO: update UI from here...?
-
-        if (myHUD == null) myHUD = game.FindObjectOfType<HUD>(); // not great perhaps, find HUD somewhere in game
-        if (myHUD != null)
-        {
-            // update HUD info...
-            //Console.WriteLine("HUD update: " + buttonCounter);
-
-            // NOTE: this will break if you add multiple doors...
-        }
-        else
-        {
-            //Console.WriteLine("Warning! no HUD found");
-        }
     }
 
     //called in level
