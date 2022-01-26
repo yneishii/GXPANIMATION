@@ -6,20 +6,20 @@ using TiledMapParser;
 
 public class MyGame : Game
 {
-	EasyDraw buttonPressedUI;
-    Level startLevel;					//when HOTKEY reset: reset to last entered level
 	public string currentLevelName;
-    string saveLevelName;				// save name before reseting current level
-	public string nextLevelName = null; //name given in 
-	public int buttonPressed = 0;		//increasing through door class, Condition: ONLY ONE DOOR IN LEVEL
+    string saveLevelName;                                   // save name before reseting current level
+	public string nextLevelName = null;                     //name given in 
+	public int buttonPressed = 0;                           //increasing through door class, Condition: ONLY ONE DOOR IN LEVEL
+	Level startLevel;                                       //when HOTKEY SHIFT: reset to last entered level
+	Sound bg = new Sound("sounds/bg.mp3", true, false);     //background song
 
-	public MyGame() : base(1280, 720, false)     // Create a window that's 800x600 and NOT fullscreen
+
+	public MyGame() : base(1280, 720, false)				// Create a window that's 800x600 and NOT fullscreen
 	{
 		OnAfterStep += CheckLoadLevel;
-		startLevel = new Level("map4.tmx");     //startLevel
+		startLevel = new Level("Menu.tmx");					//start application with startLevel
 		AddChild(startLevel);
-
-		createUI();
+		bg.Play();
 	}
 
 	// For every game object, Update is called every frame, by the engine:
@@ -29,14 +29,11 @@ public class MyGame : Game
 		//RESTART LEVEL HOT KEY	
 		if (Input.GetKeyDown(Key.LEFT_SHIFT))			
         {
-			saveLevelName = startLevel.currentLevelName;
+			saveLevelName = startLevel.currentLevelName;	
             Console.WriteLine("restart startLevel");
 			DestroyAll();
-			startLevel = new Level (saveLevelName);
+			startLevel = new Level (saveLevelName);			//create new startLevel which is the currentLevel
 			AddChild(startLevel);
-			
-			//startLevel = saveLevel;
-			//AddChild(startLevel);
         }
 	
 	}
@@ -47,19 +44,16 @@ public class MyGame : Game
         {
 			DestroyAll();                                       //startLevel = null
 			startLevel = new Level(nextLevelName);
-			AddChild(startLevel);                     //next Level is maps
-			createUI();
+			AddChild(startLevel);								
 			nextLevelName = null;
 		}
     }
 
-	public void LoadLevel(string nextLevelName) //from 3rd recording level is a child
+	public void LoadLevel(string nextLevelName) 
 	{
 		DestroyAll();                             //startLevel = null
 		startLevel = new Level(nextLevelName);
 		AddChild(startLevel);                     //next Level is maps
-		createUI();
-
 	}
 
 	void DestroyAll()
@@ -72,18 +66,6 @@ public class MyGame : Game
 		}
 	}
 
-
-	public void createUI()
-	{
-		buttonPressedUI = new EasyDraw(width - 200, 30, false);
-		AddChild(buttonPressedUI);
-        Console.WriteLine("UI created");
-		ShowUI(buttonPressed);
-	}
-	public void ShowUI(int buttonPressed)	// make a Hud: Children are UIs, whenever number changes: Redraw UI --> Look at Lecture 4 
-    {
-		buttonPressedUI.Text("Button pressed: " + buttonPressed);
-    }
 	static void Main()                          // Main() is the first method that's called when the program is run
 	{
 		new MyGame().Start();                   // Create a "MyGame" and start it

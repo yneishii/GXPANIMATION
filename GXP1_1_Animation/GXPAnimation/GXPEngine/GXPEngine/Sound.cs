@@ -58,25 +58,27 @@ namespace GXPEngine
                 }
 			}
 		}
-		
-		~Sound()
+
+
+        ~Sound()
 		{
 		}
 
-		/// <summary>
-		/// Play the specified paused and return the newly created SoundChannel
-		/// </summary>
-		/// <param name='paused'>
-		/// When set to <c>true</c>, the sound is set up, but remains paused.
-		/// You can use this to set frequency, panning and volume before playing the sound.
-		/// </param>
-		/// <param name='channelId'>
-		/// When in range 0...31, the selected channel will be used. If it already
-		/// contains a playing sound, that sound will be stopped.
-		/// When set to -1 (the default), the next free channel will be used.
-		/// However, when all channels are in use, Sound.Play will silently fail.
-		/// </param>
-		public SoundChannel Play( bool paused = false, uint channelId=0, float volume=1, float pan=0)
+
+        /// <summary>
+        /// Play the specified paused and return the newly created SoundChannel
+        /// </summary>
+        /// <param name='paused'>
+        /// When set to <c>true</c>, the sound is set up, but remains paused.
+        /// You can use this to set frequency, panning and volume before playing the sound.
+        /// </param>
+        /// <param name='channelId'>
+        /// When in range 0...31, the selected channel will be used. If it already
+        /// contains a playing sound, that sound will be stopped.
+        /// When set to -1 (the default), the next free channel will be used.
+        /// However, when all channels are in use, Sound.Play will silently fail.
+        /// </param>
+        public SoundChannel Play( bool paused = false, uint channelId=0, float volume=1, float pan=0)
 		{
 
 			#if !USE_FMOD_AUDIO

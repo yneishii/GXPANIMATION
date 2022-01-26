@@ -20,16 +20,21 @@ class HUD : GameObject
     }
     private void Update()
     {
-
+        buttonPressedUI.Text("Button Pressed: " + buttonCountSaver);
     }
-    private bool ButtonCounterChanged() 
+    private void ButtonCounterChanged()
     {
         if (buttonUICounter != buttonCountSaver)
         {
             buttonUICounter = buttonCountSaver;
-            return true;
+            
         }
-        else return false;
+        
+    }
+    
+    private void changeUI ()
+    {
+        
     }
 }
 

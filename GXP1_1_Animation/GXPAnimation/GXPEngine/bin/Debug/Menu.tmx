@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="20" height="10" tilewidth="64" tileheight="64" infinite="0" nextlayerid="5" nextobjectid="12">
+ <tileset firstgid="1" name="square" tilewidth="64" tileheight="64" tilecount="1" columns="1">
+  <image source="square.png" width="64" height="64"/>
+ </tileset>
+ <tileset firstgid="2" name="exitdoor" tilewidth="103" tileheight="153" tilecount="2" columns="2">
+  <image source="exitdoor.png" width="206" height="153"/>
+ </tileset>
+ <tileset firstgid="4" name="doorbetter" tilewidth="103" tileheight="153" tilecount="2" columns="2">
+  <image source="doorbetter.png" width="206" height="153"/>
+ </tileset>
+ <imagelayer id="4" name="bg" offsetx="-2681.65" offsety="-295.655">
+  <image source="forestbg.png" width="6400" height="1024"/>
+ </imagelayer>
+ <layer id="1" name="Tile Layer 1" width="20" height="10">
+  <data encoding="csv">
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+</data>
+ </layer>
+ <objectgroup id="3" name="text layer 0">
+  <object id="3" x="342.113" y="37.143" width="591.167" height="169.5">
+   <text fontfamily="Tw Cen MT Condensed" pixelsize="48" wrap="1" color="#ffffff" halign="center" valign="center">sneaky escape</text>
+  </object>
+  <object id="4" x="1054.13" y="349.156" width="132.5" height="64.1667">
+   <text fontfamily="Tw Cen MT" pixelsize="29" wrap="1" color="#ffffff" halign="center" valign="center">Start</text>
+  </object>
+  <object id="5" x="101.358" y="346.563" width="132.5" height="64.1667">
+   <text fontfamily="Tw Cen MT" pixelsize="29" wrap="1" color="#ffffff" halign="center" valign="center">Exit</text>
+  </object>
+  <object id="7" x="85.8091" y="193.548" width="333.494" height="64.1667">
+   <text fontfamily="Tw Cen MT" pixelsize="29" wrap="1" color="#ffffff" halign="center" valign="center">Move: LEFT/RIGHT Arrows</text>
+  </object>
+  <object id="8" x="479.675" y="193.548" width="321.823" height="64.1667">
+   <text fontfamily="Tw Cen MT" pixelsize="29" wrap="1" color="#ffffff" halign="center" valign="center">Jump: Spacebar</text>
+  </object>
+  <object id="9" x="849.244" y="190.955" width="345.164" height="64.1667">
+   <text fontfamily="Tw Cen MT" pixelsize="29" wrap="1" color="#ffffff" halign="center" valign="center">Restart current Level: SHIFT</text>
+  </object>
+  <object id="11" x="452.444" y="511.248" width="393.143" height="64.1667">
+   <text fontfamily="Tw Cen MT" pixelsize="29" wrap="1" color="#ffffff" halign="center" valign="center">go through door: UP Arrow</text>
+  </object>
+ </objectgroup>
+ <objectgroup id="2" name="Object Layer 1">
+  <object id="1" name="exit game" type="ExitDoor" gid="3" x="120.169" y="600.881" width="103" height="153"/>
+  <object id="2" name="start game" type="Door" gid="4" x="1074.17" y="599.505" width="95" height="145">
+   <properties>
+    <property name="label" value="A"/>
+    <property name="nextMap" value="map1.tmx"/>
+   </properties>
+  </object>
+  <object id="10" name="Player" type="Player" x="614.623" y="336.309" width="49.3333" height="61.3333"/>
+ </objectgroup>
+</map>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="30" height="16" tilewidth="64" tileheight="64" infinite="0" nextlayerid="6" nextobjectid="15">
+ <tileset firstgid="1" name="square" tilewidth="64" tileheight="64" tilecount="1" columns="1">
+  <image source="square.png" width="64" height="64"/>
+ </tileset>
+ <tileset firstgid="2" name="doorbetter" tilewidth="103" tileheight="153" tilecount="2" columns="2">
+  <image source="doorbetter.png" width="206" height="153"/>
+ </tileset>
+ <tileset firstgid="4" name="exitdoor" tilewidth="103" tileheight="153" tilecount="2" columns="2">
+  <image source="exitdoor.png" width="206" height="153"/>
+ </tileset>
+ <imagelayer id="2" name="bg" offsetx="-4050.5" offsety="1.91423">
+  <image source="forestbg.png" width="6400" height="1024"/>
+ </imagelayer>
+ <layer id="1" name="Tile Layer 1" width="30" height="16">
+  <data encoding="csv">
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,1,0,0,1,1,1,1,1,0,0,0,0,0,1,1,1,1,1,1,1,
+1,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,1,1,1,1,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+</data>
+ </layer>
+ <objectgroup id="5" name="textobjects layer 0">
+  <object id="9" x="60.7803" y="554.038" width="591.167" height="169.5">
+   <text fontfamily="Tw Cen MT" pixelsize="48" wrap="1" color="#ffffff" halign="center" valign="center">Congratulations! You escaped!</text>
+  </object>
+  <object id="11" x="207.083" y="80.5833" width="132.5" height="64.1667">
+   <text fontfamily="Tw Cen MT" pixelsize="29" wrap="1" color="#ffffff" halign="center" valign="center">replay..? </text>
+  </object>
+  <object id="14" x="1489.75" y="179.917" width="253.833" height="64.1667">
+   <text fontfamily="Tw Cen MT" pixelsize="29" wrap="1" color="#ffffff" halign="center" valign="center">get outta here?</text>
+  </object>
+ </objectgroup>
+ <objectgroup id="3" name="Object Layer 1">
+  <object id="7" name="Door B" type="Door" gid="2" x="69.3485" y="275.985" width="95" height="145">
+   <properties>
+    <property name="label" value="A"/>
+    <property name="nextMap" value="map1.tmx"/>
+   </properties>
+  </object>
+  <object id="13" name="leave game" type="ExitDoor" gid="5" x="1738.33" y="471.667" width="103" height="153"/>
+  <object id="1" name="Player" type="Player" x="448.147" y="878.591" width="49.3333" height="61.3333"/>
+ </objectgroup>
+</map>

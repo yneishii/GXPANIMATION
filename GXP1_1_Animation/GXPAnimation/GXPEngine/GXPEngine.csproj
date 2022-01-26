@@ -41,10 +41,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Barrel.cs" />
+    <Compile Include="Scripts\ExitDoor.cs" />
     <Compile Include="Scripts\HUD.cs" />
     <Compile Include="Scripts\Level.cs" />
     <Compile Include="Scripts\Button.cs" />
-    <Compile Include="Scripts\ColTile.cs" />
     <Compile Include="GXPEngine\AddOns\Gizmos.cs" />
     <Compile Include="GXPEngine\AddOns\SpriteBatch.cs" />
     <Compile Include="GXPEngine\AddOns\TiledLoader.cs" />
@@ -87,7 +87,6 @@
     <Compile Include="GXPEngine\FMOD\FMODSoundSystem.cs" />
     <Compile Include="GXPEngine\SoLoud\Soloud.cs" />
     <Compile Include="GXPEngine\SoLoud\SoloudSoundSystem.cs" />
-    <Compile Include="Scripts\PickUp.cs" />
     <Compile Include="Scripts\Player.cs" />
     <Compile Include="Scripts\Enemy.cs" />
   </ItemGroup>

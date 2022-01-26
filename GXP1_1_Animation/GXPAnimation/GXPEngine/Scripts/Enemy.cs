@@ -9,109 +9,67 @@ using TiledMapParser;
 
 class Enemy : AnimationSprite
 {
-    private const float GRAVITY = 0.5f; //at 240 - 0.5
-    bool walkRight; //can be set in Tiled
-    float vx = 2f;
-    float vxOld;
-    float fastvx = 4f;
+    private const float GRAVITY = 0.5f; //for 60 Hrz
+    bool walkRight;                 //can be customized in Tiled
+    float vx = 2f;                  //normal walking speed
+    float fastvx = 4f;              //running speed
     float vy;
-    int rayLength = 400;
-    int walkingLength = 100;        // need to implement this still
-    bool moveFast = false;
+    int rayLength = 400;            //length of the "raycasting"        
+    bool isAlarmed = false;         //for soundeffect
 
+    Sound alarmed = new Sound("sounds/alarmed.wav");
     
-    Sprite visionRight; //Sprite for the indicating Right "Raycasting"  
-    Sprite visionLeft;  //Sprite for the indicating Left "Raycasting"
-    GameObject target;
+    Sprite visionRight;                     //Sprite for the indicating Right "Raycasting"  
+    Sprite visionLeft;                      //Sprite for the indicating Left "Raycasting"
+    GameObject target;                      //will be set in Level
     Collision xCol;
-    //List<GameObject> TilesInSight;
-    Level level = null;
-    public string currentLevelName = null;
+    public string currentLevelName = null;  //set in tiled, for restarting the level
+
 
     public Enemy(TiledObject obj) : base("Chrom.png", 8, 4) //when Enemy is called as rectangle in Tiled
     {
+        //setting up right vision
         visionRight = new Sprite("visionRight.png", false, false);
         visionRight.SetOrigin(0, height / 2);
         visionRight.alpha = 0.9f;
         AddChild(visionRight);
 
-        visionLeft = new Sprite("visionLeft.png", false, false);
+        //setting up left vision
+        visionLeft = new Sprite("visionLeft.png", false, false);    
         SetOrigin(0, height / 2);
         visionLeft.SetXY(-rayLength, -height / 2);
         AddChild(visionLeft);
 
         walkRight = obj.GetBoolProperty("walkRight");               //option for Enemy to walk left or right at the start of the level
-        if (walkRight)
+        if (walkRight)                                              //if walking right at start of level
         {
-            Mirror(true, false);                                    //mirror enemy sprite to right
+            Mirror(true, false);                                    
             visionRight.visible = true;
             visionLeft.visible = false;
         }
-        else
+        else                                                        //if walking left at start of level
         {
-            vx = -vx;                                               
+            vx = -vx;                                              
             visionRight.visible = false;
             visionLeft.visible = true;
         }                             
-
-
-        currentLevelName = obj.GetStringProperty("map", "");
-        Console.WriteLine("CURRENT LEVEL NAME " + currentLevelName);
+        currentLevelName = obj.GetStringProperty("map", "");        //level  will be taken from Tiled
         Initialize();
     }
-
     public Enemy(string imageFile, int cols, int rows, TiledObject obj) : base(imageFile, cols, rows)
     {
         currentLevelName = obj.GetStringProperty("map", "");
         Initialize();
-
-        /*test = new Sprite("colors.png");
-        test.x = 10;
-        AddChild(test);
-
-        vision = new Sprite("colors.png");
-        vision.SetOrigin(0, vision.height / 2);
-        vision.scaleX = 3; // current length: 64 * 3 = 192?
-        vision.scaleY = 0.1f;
-        AddChild(vision);   
-        vision.alpha = 0.2f;
-        */
     }
 
     private void Initialize()
     {
         SetOrigin(width / 2, height / 2);
         collider.isTrigger = true;
-        vxOld = vx;
     }
     public void SetTarget(GameObject target) //Set in Level, right after Enemy is created : target is player  
     {
         this.target = target;
-    }
-    public void SetLevel(Level levelObject) //
-    {
-        level = levelObject;
-    }
-
-    private void OverlapsOnY(GameObject other)                     //check whether Enemy is Colliding with any Objects on their height
-    {
-        if (other.y >= y - height / 2 || other.y <= y + height / 2)
-        {
-            Console.WriteLine("Overlapping with {0}", other);
-            float dx = other.x - x; // distance from other to enemy
-        }
-    }
-    
-    private void CheckMovingFast()
-    {
-        if (moveFast)
-        {
-            vx = fastvx;
-        }
-        else 
-        {
-            vx = vxOld; 
-        }
     }
 
     private bool PlayerOnSightRight() //check whether player is RIGHT and in Range of Enemy : Not Hiding or Hiding and Moving
@@ -128,31 +86,11 @@ class Enemy : AnimationSprite
 
     private void Update()
     {
-
-        SetCycle(5, 3, 10); // if 240 HRz set to 50
+        SetCycle(5, 3, 10);
         Animate();
 
-        //TilesInSight = level.GetTilesInSight(this); // --> Tiles in sight is null
 
-
-        if (target != null)
-        {
-            float dx = target.x - x;
-            float dy = target.y - y;
-            float angle = Mathf.Atan2(dy, dx) * 180 / Mathf.PI; // All will be revealed during physics... (or just google) // not needed for the game for now
-                                                                //vision.rotation = angle;
-                                                                // todo: scale the vision ray length such that it ends up exactly at the player
-                                                                // also todo: check collisions for the vision ray
-            if (Input.GetKey(Key.F))
-            {
-                Console.WriteLine("Distance to target: {0},{1} angle: {2}", dx, dy, angle);
-            }
-        }
-        else
-        {
-            Console.WriteLine("No target set!");
-        }
-
+        //prevent enemy from falling through tiles
         vy += GRAVITY;
         Collision yCol = MoveUntilCollision(0, vy);
         if (yCol != null)
@@ -160,38 +98,32 @@ class Enemy : AnimationSprite
             vy = 0;
         }
 
-
-
-        ///////////////////////////// X MOVEMENT /////////////////////////////////////
-
+        //X MOVEMENT 
         xCol = MoveUntilCollision(vx, 0);
 
-        //Console.WriteLine("Height difference "+ (y - target.y));
-        if ((y - target.y >= -10 && y - target.y < 10)) // player and enemy approx on the same height
+        if ((y - target.y >= -10 && y - target.y < 10))   // player and enemy approx on the same height
         {
             if (PlayerOnSightRight())
             {
-                //Console.WriteLine("this one, walk right towards player");
-                Move(fastvx, 0);                                                                        //////////////////////////////////////////////////////////////////////////////////INSTEAD VX FAST
-                //moveFast = true;
-                visionRight.visible = true;
+                if (!isAlarmed) { alarmed.Play(); }
+                Move(fastvx, 0);              //run right                   
                 visionLeft.visible = false;
+                isAlarmed = true;
             }
             else if (PlayerOnSightLeft())
             {
-                // Console.WrieLine("else if, walk left towards player");
-                Move(-fastvx, 0);                                                                      //////////////////////////////////////////////////////////////////////////////////INSTEAD VX FAST
-                //moveFast = true;
-                visionRight.visible = false;
+                if (!isAlarmed) { alarmed.Play(); }
+                Move(-fastvx, 0);             //run left                   
                 visionLeft.visible = true;
+                isAlarmed = true;
             }
             else
             {
-                //Console.WriteLine("none");
+                isAlarmed = false;
             }
         }
 
-
+        //Wall collision : enemy bounces of wall
         if (xCol != null)
         {
             vx = -vx;
@@ -210,32 +142,7 @@ class Enemy : AnimationSprite
                 visionLeft.visible = true;
                 walkRight = false;
             }
-        }
-
-            /*
-            GameObject[] collisions = GetCollisions();
-            for (int i = 0; i < collisions.Length; i++)
-            {
-                if (collisions[i] is ColTile  || collisions[i] is Barrel)           //enemy falls through because colTile isnt Triggercollider
-                {
-                    //Console.WriteLine("Enemy Colliding");
-                    vx = -vx;
-
-                    if (!walkRight)
-                    {
-                        Mirror(true, false);
-                        walkRight = true;
-                    }
-                    else
-                    {
-                        Mirror(false, false);
-                        walkRight = false;
-                    }
-                    break; // to prevent double collision
-                }
-            }
-            */
-        
+        }   
     }
 }
 

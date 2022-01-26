@@ -8,7 +8,7 @@ using GXPEngine;
 class Button : AnimationSprite
 {
     private string label;
-    private Door targetObject;          //directly use door instead of Gameobject
+    private Door targetObject;                                      //targetObject : has to be door!
     public string Label
     {
         get { return label; }
@@ -39,13 +39,13 @@ class Button : AnimationSprite
         collider.isTrigger = true;
     }
 
-    public void SetTarget(Door obj)
+    public void SetTarget(Door obj) //linking door in Level.cs
     {
-        targetObject = obj; //linking door
+        targetObject = obj;         
     }
     private void Update()
     {
-        SetCycle(0, 1);                         
+        SetCycle(0, 1);
         GameObject [] collisions = GetCollisions();
         for (int i = 0; i < collisions.Length; i++)
         {
@@ -54,32 +54,20 @@ class Button : AnimationSprite
                 SetCycle(1, 1);             //pressed image
                 if (targetObject is Door)   //would this work tho?
                 {
-                    targetObject.Press();
+                    targetObject.Press(); 
                 }
             }
             else if (collisions[i] is Player)
             {
-               Player player = (Player)collisions[i];
+                Player player = (Player)collisions[i];
                 if (!player.isHiding)   //don't press when the player is in the barrel
                 {
                     SetCycle(1, 1);
                     targetObject.Press();
+                    
                 }
             }
-
-            /*else
-            {
-                if (targetObject is Door)   //would this work tho?
-                {
-                    if (targetObject.GetNumPressed() > targetObject.GetButtonCounter())
-                    targetObject.DecreaseNumPressed();
-                }
-            }
-            */
-
         }
     }
-}
-
-//init idea             buttonCounter is all foreach button in (list <Button>)buttons 
-//                      buttonCounter += button.buttonNumber;                
+    
+}            
