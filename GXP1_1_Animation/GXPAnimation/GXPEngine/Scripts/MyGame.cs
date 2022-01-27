@@ -1,5 +1,5 @@
 using System;                                   // System contains a lot of default C# libraries 
-using System.Collections.Generic;				//for creating collections?
+using System.Collections.Generic;               //for creating collections?
 using GXPEngine;                                // GXPEngine contains the engine
 using System.Drawing;                           // System.Drawing contains drawing tools such as Color definitions
 using TiledMapParser;
@@ -7,17 +7,17 @@ using TiledMapParser;
 public class MyGame : Game
 {
 	public string currentLevelName;
-    string saveLevelName;                                   // save name before reseting current level
+	string saveLevelName;                                   // save name before reseting current level
 	public string nextLevelName = null;                     //name given in 
 	public int buttonPressed = 0;                           //increasing through door class, Condition: ONLY ONE DOOR IN LEVEL
 	Level startLevel;                                       //when HOTKEY SHIFT: reset to last entered level
 	Sound bg = new Sound("sounds/bg.mp3", true, false);     //background song
 
 
-	public MyGame() : base(1280, 720, false)				// Create a window that's 800x600 and NOT fullscreen
+	public MyGame() : base(1280, 720, false)                // Create a window that's 800x600 and NOT fullscreen
 	{
 		OnAfterStep += CheckLoadLevel;
-		startLevel = new Level("Menu.tmx");					//start application with startLevel
+		startLevel = new Level("Menu.tmx");                 //start application with startLevel
 		AddChild(startLevel);
 		bg.Play();
 	}
@@ -25,30 +25,29 @@ public class MyGame : Game
 	// For every game object, Update is called every frame, by the engine:
 	void Update()
 	{
-		
+
 		//RESTART LEVEL HOT KEY	
-		if (Input.GetKeyDown(Key.LEFT_SHIFT))			
-        {
-			saveLevelName = startLevel.currentLevelName;	
+		if (Input.GetKeyDown(Key.TAB))
+		{
+			saveLevelName = startLevel.currentLevelName;
 			DestroyAll();
-			startLevel = new Level (saveLevelName);			//create new startLevel which is the currentLevel
+			startLevel = new Level(saveLevelName);          //create new startLevel which is the currentLevel
 			AddChild(startLevel);
-        }
-	
+		}
 	}
 
-	void CheckLoadLevel()		//what is difference between checkLoadLevel (OnAfterStep)
-    {
+	void CheckLoadLevel()       //what is difference between checkLoadLevel (OnAfterStep)
+	{
 		if (nextLevelName != null)
-        {
+		{
 			DestroyAll();                                       //startLevel = null
 			startLevel = new Level(nextLevelName);
-			AddChild(startLevel);								
+			AddChild(startLevel);
 			nextLevelName = null;
 		}
-    }
+	}
 
-	public void LoadLevel(string nextLevelName) 
+	public void LoadLevel(string nextLevelName)
 	{
 		DestroyAll();                             //startLevel = null
 		startLevel = new Level(nextLevelName);
@@ -68,4 +67,4 @@ public class MyGame : Game
 	{
 		new MyGame().Start();                   // Create a "MyGame" and start it
 	}
-}	
+}

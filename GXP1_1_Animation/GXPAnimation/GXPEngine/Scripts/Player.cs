@@ -8,19 +8,19 @@ using TiledMapParser;
 using GXPEngine.Core; //for collision col 
 using GXPEngine;
 
-class Player : AnimationSprite  //CHANGE TO ANIMATIONSSPRITE
+class Player : AnimationSprite  
 {
     //game is supposed to run at 60 Hz refresh rate
 
-    Sprite vignette;                        //vignette effect over camera
+    Sprite vignette;                                                      //vignette effect over camera
     Camera camera = new Camera(0, 0, 1280, 720);                          //camera follows the player
 
-    private const float GRAVITY = 4f;       
+    private const float GRAVITY = 4f;
     float xSpeed = 6.8f;                    //player's speed is slightly faster than enemy's run speed
     float saveXSpeed;                       //to store original xSpeed, 
     float xSpeedBarrel = 3f;                //speed when hiding in barrel
     float vy;                               //force for falling
-    float jumpStrength = 50;                
+    float jumpStrength = 50;
     float _jumpStrength;                    //to store original jumpStrength
     float _jumpStrengthBarrel = 1f;         //jumpStrength when hiding in barrel
     bool grounded;                          //check whether the player is on the ground
@@ -35,31 +35,33 @@ class Player : AnimationSprite  //CHANGE TO ANIMATIONSSPRITE
 
     private enum Facing { NONE, LEFT, RIGHT, UP, DOWN };                 //needed for animationSprite facing direction
     Facing facing;
-    public Player(TiledObject obj=null) : base("link.png", 10, 8)        //needed for autoInstance
-    {
-        Initialize();      
-    }
 
-    public Player(string Imagefile, int cols, int rows, TiledObject obj = null) : base (Imagefile, cols, rows)
+
+    public Player(TiledObject obj = null) : base("link.png", 10, 8)        //needed for autoInstance
     {
         Initialize();
     }
 
-    private void Initialize() 
+    public Player(string Imagefile, int cols, int rows, TiledObject obj = null) : base(Imagefile, cols, rows)
+    {
+        Initialize();
+    }
+
+    private void Initialize()
     {
         //Camera that follows the player
-        camera = new Camera(0, 0, game.width, game.height);                       //set camera to screen size of mygame
-        camera.scale = 5f;                                          //zoom factor for camera, bigger number: bigger zoom out factor
+        camera = new Camera(0, 0, game.width, game.height);             //set camera to screen size of mygame
+        camera.scale = 5f;                                              //zoom factor for camera, bigger number: bigger zoom out factor
 
         //Vignette Effect when Hiding in Barrel
         vignette = new Sprite("vignette2.png");
-        vignette.SetXY(-game.width/2, -game.height/2);             //set vignette position to left corner of the screen
+        vignette.SetXY(-game.width / 2, -game.height / 2);              //set vignette position to left corner of the screen
         vignette.collider.isTrigger = true;
-        vignette.visible = false;                                  //will be visible when the player is hiding
+        vignette.visible = false;                                       //will be visible when the player is hiding
         camera.AddChild(vignette);
 
         AddChild(camera);
-        
+
         //Player specific attributes
         facing = Facing.DOWN;
         SetOrigin(width / 2, height / 2);
@@ -106,7 +108,6 @@ class Player : AnimationSprite  //CHANGE TO ANIMATIONSSPRITE
                     isHiding = false;
                     vignette.visible = false;
                 }
-
             }
             //restart Level
             if (collisions[i] is Enemy)
@@ -122,7 +123,7 @@ class Player : AnimationSprite  //CHANGE TO ANIMATIONSSPRITE
             if (collisions[i] is Door)
             {
                 Door door = (Door)collisions[i];
-                if (Input.GetKeyDown(Key.UP) && door.NumPressed == door.ButtonCounter) 
+                if (Input.GetKeyDown(Key.UP) && door.NumPressed == door.ButtonCounter)
                 {
                     runningSound.Play();
                     (game as MyGame).LoadLevel(door.NextMap);   //nextMap is set in Tiled        
@@ -138,10 +139,10 @@ class Player : AnimationSprite  //CHANGE TO ANIMATIONSSPRITE
     private void Movement()
     {
         float dx = 0;
-        
+
         // Y Axis, Jumping
         vy += GRAVITY;
-        if (Input.GetKeyDown(Key.SPACE) && grounded)    
+        if (Input.GetKeyDown(Key.SPACE) && grounded)
         {
             vy = -jumpStrength;
             jumpSound.Play();
@@ -151,11 +152,11 @@ class Player : AnimationSprite  //CHANGE TO ANIMATIONSSPRITE
         if (Input.GetKey(Key.RIGHT) || Input.GetKey(Key.LEFT))
         {
             isMoving = true;                        //for MovementAnimation()
-            
+
             if (Input.GetKey(Key.RIGHT))
             {
                 facing = Facing.RIGHT;
-                dx += xSpeed;         
+                dx += xSpeed;
             }
             if (Input.GetKey(Key.LEFT))
             {

@@ -83,12 +83,10 @@ class Enemy : AnimationSprite
         return (!walkRight && target.x - x > -rayLength && target.x - x <= 0 && !(target as Player).isHiding) ^
                (!walkRight && target.x - x > -rayLength && target.x - x <= 0 && (target as Player).isMoving && (target as Player).isHiding);
     }
-
     private void Update()
     {
         SetCycle(5, 3, 10);
         Animate();
-
 
         //prevent enemy from falling through tiles
         vy += GRAVITY;

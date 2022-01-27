@@ -9,7 +9,7 @@
  <tileset firstgid="4" name="doorbetter" tilewidth="103" tileheight="153" tilecount="2" columns="2">
   <image source="doorbetter.png" width="206" height="153"/>
  </tileset>
- <imagelayer id="4" name="bg" offsetx="-2681.65" offsety="-295.655">
+ <imagelayer id="4" name="bg" offsetx="-2663.65" offsety="-89.6554">
   <image source="forestbg.png" width="6400" height="1024"/>
  </imagelayer>
  <layer id="1" name="Tile Layer 1" width="20" height="10">
@@ -43,7 +43,7 @@
    <text fontfamily="Tw Cen MT" pixelsize="29" wrap="1" color="#ffffff" halign="center" valign="center">Jump: Spacebar</text>
   </object>
   <object id="9" x="849.244" y="190.955" width="345.164" height="64.1667">
-   <text fontfamily="Tw Cen MT" pixelsize="29" wrap="1" color="#ffffff" halign="center" valign="center">Restart current Level: SHIFT</text>
+   <text fontfamily="Tw Cen MT" pixelsize="29" wrap="1" color="#ffffff" halign="center" valign="center">Restart current Level: TAB</text>
   </object>
   <object id="11" x="452.444" y="511.248" width="393.143" height="64.1667">
    <text fontfamily="Tw Cen MT" pixelsize="29" wrap="1" color="#ffffff" halign="center" valign="center">go through door: UP Arrow</text>

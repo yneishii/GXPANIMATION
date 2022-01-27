@@ -16,7 +16,6 @@ class Door : AnimationSprite
     bool isDoorOpen = false;
     Sound openDoor = new Sound("sounds/doorOpen.wav");
 
-
     public int NumPressed 
     {
         get { return numPressed; }
@@ -40,10 +39,8 @@ class Door : AnimationSprite
         set { nextMap = ""; }
     }
 
-
     public Door(TiledObject obj) : base("doorbetter.png", 2, 1)
     {
-       
     }
 
     public Door(string Imagefile, int cols, int rows, TiledObject obj) : base( Imagefile, cols, rows)
